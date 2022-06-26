@@ -1,0 +1,43 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<p>Hi {{ user.username }}</p>
+<p>You have this bio {{ user.bio }}</p>
+{% if user.avatar %}
+<p>pic: <img src="{{ user.avatar.url }}"/></p>
+{% endif %}
+<p><a href="{% url 'edituser' %}">Edit account</a></p>
+<p><a href="{% url 'logout' %}">Log Out</a></p>
+<p><a href="{% url 'create_post' %}">Create post</a></p>
+
+
+{% if posts%}
+<ul>
+    {% for post in posts %}
+        <li>
+            <h1>{{post.caption}}</h1>
+            <p>author: {{ post.author.username }}</p>
+            <p>{{post.text}}</p>
+        {% for image in post.images.all %}
+            <p>pics: <img src="{{ image.image.url }}"/></p>
+        {% endfor %}
+            <p>created at: {{ post.created_at }}</p>
+        </li>
+    {% endfor %}
+<ul>
+{% else %}
+<p>No posts available</p>
+{% endif %}
+
+
+
+{% else %}
+<p>You are not logged in</p>
+<a href="{% url 'login' %}">Log In</a>
+<a href="{% url 'signup' %}">Sign Up</a>
+{% endif %}
+{% endblock%}
