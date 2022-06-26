@@ -22,28 +22,11 @@ class SignUp(generic.CreateView):
     template_name = 'registration/signup.html'
 
 
-# @login_required
-# def edit_user(request):
-#     if request.method == 'POST':
-#         form = DUserChangeForm(request.POST, instance=request.user)
-#         if form.is_valid():
-#             #form.save()
-#             request.user.save()
-#             messages.success(request, "Profile was updated successfully")
-#             return redirect('home')
-#     else:
-#         form = DUserChangeForm(instance=request.user)
-#
-#     return render(request, 'registration/edituser.html', {'form': form})
-
-
 @login_required
 def edit_user(request):
     if request.method == 'POST':
-        form = DUserChangeForm(request.POST, instance=request.user)
-        avatar_form = DUserAvatarForm(request.POST, request.FILES, instance=request.user)
-        if form.is_valid() and avatar_form.is_valid(): #request.POST, request.FILES, instance = company
-            request.user.avatar = avatar_form.cleaned_data['avatar']
+        form = DUserChangeForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
             request.user.save()
             messages.success(request, "Profile was updated successfully")
             return redirect('home')

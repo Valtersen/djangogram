@@ -12,6 +12,8 @@ from .models import *
 # last_user nosense123
 # felt cute cute123456
 # anotherOne ohugh4321
+# labaza fgdzzhzhFDVVZ
+# EWANXNGFHX dsVVSBfSBfbe
 
 class DUserAdmin(UserAdmin):
     add_form = DUserCreationForm

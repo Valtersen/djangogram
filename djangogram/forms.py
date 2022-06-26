@@ -7,8 +7,8 @@ from .models import *
 class DUserCreationForm(UserCreationForm):
     class Meta:
         model = DUser
-        # fields = ('username', 'email', 'avatar', 'bio')
-        fields = ('username', 'email', 'bio')
+        fields = ('username', 'email', 'avatar', 'bio')
+        #fields = ('username', 'email', 'bio')
         widgets = {
             'bio': forms.Textarea(attrs={'rows': 3}),
             #'avatar': ClearableFileInput(),
@@ -18,11 +18,11 @@ class DUserCreationForm(UserCreationForm):
 class DUserChangeForm(UserChangeForm):
     class Meta:
         model = DUser
-        #fields = ('username', 'avatar', 'bio')
-        fields = ('username', 'bio')
+        fields = ('username', 'avatar', 'bio')
+        #fields = ('username', 'bio')
         widgets = {
             'bio': forms.Textarea(attrs={'rows': 3}),
-            #'avatar': ClearableFileInput(),
+            'avatar': ClearableFileInput(),
         }
 
 
