@@ -31,10 +31,9 @@ def edit_user(request):
             messages.success(request, "Profile was updated successfully")
             return redirect('home')
     else:
-        avatar_form = DUserAvatarForm(request.POST, instance=request.user)
         form = DUserChangeForm(instance=request.user)
 
-    return render(request, 'registration/edituser.html', {'form': form, 'avatar_form': avatar_form})
+    return render(request, 'registration/edituser.html', {'form': form,})
 
 
 @login_required
@@ -58,4 +57,17 @@ def create_post(request):
 
     return render(request, 'create_post.html', {'form': form, 'image_form': image_form})
 
-# in your template.html <form> tag must include enctype="multipart/form-data"
+
+@login_required
+def profile(request, pk=None):
+    if pk:
+        user = DUser.objects.get(id=pk)
+    else:
+        user = request.user
+    posts = user.posts.all().order_by('-created_at')
+    # posts = Post.objects.all().order_by('-created_at')
+
+    context = {'posts': posts, 'user': user}
+    return render(request, 'profile.html', context)
+
+

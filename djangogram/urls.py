@@ -10,5 +10,7 @@ urlpatterns = [
     path('logged_in/', RedirectView.as_view(pattern_name='home', permanent=False), name='logged_in'),
     path('signup/', views.SignUp.as_view(), name='signup'),
     path('edit/', views.edit_user, name='edituser'),
-    path('create_post/', views.create_post, name='create_post')
+    path('create_post/', views.create_post, name='create_post'),
+    path('profile/', views.profile, name='profile'),
+    path('profile/<int:pk>/', views.profile, name='profile'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -4,22 +4,20 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import *
 
 
-class DUserCreationForm(UserCreationForm):
+class DUserCreationForm(forms.ModelForm):
     class Meta:
         model = DUser
         fields = ('username', 'email', 'avatar', 'bio')
-        #fields = ('username', 'email', 'bio')
         widgets = {
             'bio': forms.Textarea(attrs={'rows': 3}),
-            #'avatar': ClearableFileInput(),
+            'avatar': ClearableFileInput(),
         }
 
 
-class DUserChangeForm(UserChangeForm):
+class DUserChangeForm(forms.ModelForm):
     class Meta:
         model = DUser
         fields = ('username', 'avatar', 'bio')
-        #fields = ('username', 'bio')
         widgets = {
             'bio': forms.Textarea(attrs={'rows': 3}),
             'avatar': ClearableFileInput(),

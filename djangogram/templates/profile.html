@@ -1,19 +1,18 @@
-
 {% extends 'base.html' %}
 
 {% block title %}Home{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
-<p>Hi <a href="{% url 'profile' %}">{{ user.username }}</a></p>
+<p><a href="{% url 'home' %}">Home</a></p>
+<p><a href="{% url 'logout' %}">Log Out</a></p>
+<p><a href="{% url 'create_post' %}">Create post</a></p>
+
+<p>username: {{ user.username }}</p>
 <p>bio: {{ user.bio }}</p>
 {% if user.avatar %}
 <p>pic: <img src="{{ user.avatar.url }}"/></p>
 {% endif %}
-<p><a href="{% url 'edituser' %}">Edit account</a></p>
-<p><a href="{% url 'logout' %}">Log Out</a></p>
-<p><a href="{% url 'create_post' %}">Create post</a></p>
-
+<p>joined: {{ user.date_joined }}</p>
 
 {% if posts%}
 <ul>
@@ -32,12 +31,5 @@
 {% else %}
 <p>No posts available</p>
 {% endif %}
-
-
-
-{% else %}
-<p>You are not logged in</p>
-<a href="{% url 'login' %}">Log In</a>
-<a href="{% url 'signup' %}">Sign Up</a>
-{% endif %}
 {% endblock%}
+
