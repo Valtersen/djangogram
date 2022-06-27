@@ -9,6 +9,17 @@ class DUser(AbstractUser):
     avatar = models.ImageField(default='default.png', null=True, upload_to='avatars')
     bio = models.CharField(max_length=200, blank=True)
 
+    # resizing images
+    def save(self, *args, **kwargs):
+        super().save()
+
+        img = Image.open(self.avatar.path)
+
+        if img.height > 200 or img.width > 200:
+            new_img = (200, 200)
+            img.thumbnail(new_img)
+            img.save(self.avatar.path)
+
     def __str__(self):
         return self.username
 
@@ -29,5 +40,19 @@ class PostImage(models.Model):
     # image = models.ImageField(upload_to='posts/%Y/%m/%d', null=True)
     image = models.ImageField(null=True, blank=True, upload_to='posts/%Y/%m/%d')
 
+    # resizing images
+    def save(self, *args, **kwargs):
+        super().save()
+
+        img = Image.open(self.image.path)
+
+        if img.height > 500 or img.width > 500:
+            new_img = (500, 500)
+            img.thumbnail(new_img)
+            img.save(self.image.path)
+
     def __str__(self):
         return self.post
+
+    def __eq__(self, other):
+        return self.id == other.id

@@ -59,15 +59,40 @@ def create_post(request):
 
 
 @login_required
-def profile(request, pk=None):
-    if pk:
-        user = DUser.objects.get(id=pk)
-    else:
-        user = request.user
-    posts = user.posts.all().order_by('-created_at')
-    # posts = Post.objects.all().order_by('-created_at')
+def edit_post(request, post_id):
+    post = Post.objects.get(id=post_id)
+    if request.method == 'POST':
 
-    context = {'posts': posts, 'user': user}
-    return render(request, 'profile.html', context)
+        form = PostForm(request.POST, instance=post)
+        image_form = PostImageForm(request.POST, request.FILES,)
+        images = request.FILES.getlist('image')
+        if form.is_valid() and image_form.is_valid():
+            form.save()
+
+            for i in images:
+                image = PostImage(image=i, post=post)
+                image.save()
+            return redirect('home')
+    else: # model = PostImage instance=PostImage.objects.get(post=post).all() # NO
+        form = PostForm(instance=post)
+        image_form = PostImageForm
+
+    return render(request, 'create_post.html', {'form': form, 'image_form': image_form})
+
+
+@login_required
+def profile(request, username):
+    owner = DUser.objects.get(username=username)
+    posts = owner.posts.all().order_by('-created_at')
+    context = {'posts': posts, 'owner': owner}
+
+    if request.user == owner:
+        return render(request, 'userprofile.html', context)
+    else:
+        return render(request, 'profile.html', context)
+
+
+
+
 
 

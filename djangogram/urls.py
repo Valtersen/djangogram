@@ -11,6 +11,8 @@ urlpatterns = [
     path('signup/', views.SignUp.as_view(), name='signup'),
     path('edit/', views.edit_user, name='edituser'),
     path('create_post/', views.create_post, name='create_post'),
-    path('profile/', views.profile, name='profile'),
-    path('profile/<int:pk>/', views.profile, name='profile'),
+    path('<str:username>/', views.profile, name='profile'),
+    path('edit_post/<int:post_id>', views.edit_post, name='edit_post')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+

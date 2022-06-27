@@ -51,3 +51,25 @@ class PostImageForm(forms.ModelForm):
             'image': 'Select one or multiple images'
         }
 
+
+class PostChangeForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ('caption', 'text')
+
+
+class PostChangeImageForm(forms.ModelForm):
+    class Meta:
+        model = PostImage
+        fields = ('image',)
+        widgets = {
+            'image': ClearableFileInput(attrs={'multiple': True})
+        }
+        labels = {
+            'image': 'Select one or multiple images'
+        }
+
+    image = forms.ModelMultipleChoiceField(
+        queryset=Post.images.all(),
+        widget=forms.CheckboxSelectMultiple
+    )
