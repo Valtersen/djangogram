@@ -54,5 +54,10 @@ class PostImage(models.Model):
     def __str__(self):
         return self.post
 
-    def __eq__(self, other):
-        return self.id == other.id
+
+class Likes(models.Model):
+    post = models.ForeignKey(Post, null=True, on_delete=models.CASCADE, related_name='likes')
+    user = models.ForeignKey(DUser, null=True, on_delete=models.CASCADE, related_name='liked')
+
+    def __str__(self):
+        return f"post: {self.post}, user: {self.user}"

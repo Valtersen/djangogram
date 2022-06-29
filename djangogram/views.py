@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.views import generic
 from django.contrib.auth.forms import *
@@ -33,7 +33,7 @@ def edit_user(request):
     else:
         form = DUserChangeForm(instance=request.user)
 
-    return render(request, 'registration/edituser.html', {'form': form,})
+    return render(request, 'edituser.html', {'form': form,})
 
 
 @login_required
@@ -64,7 +64,7 @@ def edit_post(request, post_id):
     if request.method == 'POST':
 
         form = PostForm(request.POST, instance=post)
-        image_form = PostImageForm(request.POST, request.FILES,)
+        image_form = PostChangeImageForm(request.POST, request.FILES,)
         images = request.FILES.getlist('image')
         if form.is_valid() and image_form.is_valid():
             form.save()
@@ -73,11 +73,26 @@ def edit_post(request, post_id):
                 image = PostImage(image=i, post=post)
                 image.save()
             return redirect('home')
-    else: # model = PostImage instance=PostImage.objects.get(post=post).all() # NO
+    else:
         form = PostForm(instance=post)
-        image_form = PostImageForm
+        image_form = PostChangeImageForm
 
     return render(request, 'create_post.html', {'form': form, 'image_form': image_form})
+
+
+@login_required
+def post_detail(request, post_id): #url /author/post_id
+    post = get_object_or_404(Post, id=post_id)
+    already_liked = True if request.user.id in post.likes.values_list('user', flat=True) else False
+    if request.method == 'POST':
+        if already_liked:
+            like = Likes.objects.get(user=request.user.id, post=post.id)
+            like.delete()
+        else:  # HERE
+            like = Likes(user=request.user, post=post)
+            like.save()
+        return redirect('post_detail', post_id=post_id)
+    return render(request, 'post_detail.html', {'post': post, 'liked': already_liked, 'total':post.likes.count() })
 
 
 @login_required
@@ -90,9 +105,3 @@ def profile(request, username):
         return render(request, 'userprofile.html', context)
     else:
         return render(request, 'profile.html', context)
-
-
-
-
-
-

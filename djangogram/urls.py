@@ -12,7 +12,7 @@ urlpatterns = [
     path('edit/', views.edit_user, name='edituser'),
     path('create_post/', views.create_post, name='create_post'),
     path('<str:username>/', views.profile, name='profile'),
-    path('edit_post/<int:post_id>', views.edit_post, name='edit_post')
+    path('edit_post/<int:post_id>', views.edit_post, name='edit_post'),
+    path('post/<int:post_id>', views.post_detail, name='post_detail'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
 

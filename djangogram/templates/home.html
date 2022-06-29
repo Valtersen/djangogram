@@ -19,7 +19,7 @@
 <ul>
     {% for post in posts %}
         <li>
-            <h2>{{post.caption}}</h2>
+            <h2><a href="{% url 'post_detail' post.id %}">{{post.caption}}</a></h2>
             <p>author: <a href="{% url 'profile' post.author.username %}">{{ post.author.username }}</a></p>
             <p>{{post.text}}</p>
         {% for image in post.images.all %}
@@ -32,7 +32,6 @@
 {% else %}
 <p>No posts available</p>
 {% endif %}
-
 
 
 {% else %}

@@ -34,3 +34,5 @@ admin.site.unregister(Group)
 admin.site.register(Post)
 admin.site.register(PostImage)
 
+admin.site.register(Likes)
+
