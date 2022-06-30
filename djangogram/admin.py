@@ -24,7 +24,8 @@ class DUserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'email', 'avatar', 'bio', 'password')}),
         ('Time related', {'fields': ('last_login', 'date_joined')}),
-        ('Other', {'fields': ('is_active', 'is_superuser', 'is_staff', 'user_permissions')})
+        ('Other', {'fields': ('is_active', 'is_superuser', 'is_staff', 'user_permissions')}),
+        ('Follow', {'fields': ('following',)})
     )
 
 

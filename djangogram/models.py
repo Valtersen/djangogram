@@ -8,6 +8,7 @@ class DUser(AbstractUser):
     email = models.EmailField(max_length=254)
     avatar = models.ImageField(default='default.png', null=True, upload_to='avatars')
     bio = models.CharField(max_length=200, blank=True)
+    following = models.ManyToManyField('self', symmetrical=False, related_name='followers', blank=True, null=True)
 
     # resizing images
     def save(self, *args, **kwargs):

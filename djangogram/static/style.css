@@ -1,0 +1,30 @@
+#follow-button {
+  color: #3399FF;
+  font-family: "Helvetica";
+  font-size: 10pt;
+  background-color: #ffffff;
+  border: 1px solid;
+  border-color: #3399FF;
+  border-radius: 3px;
+  width: 85px;
+  height: 30px;
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  cursor: hand;
+}
+#followed-button{
+  color: ##3399FF;
+  font-family: "Helvetica";
+  font-size: 10pt;
+  background-color: #2EB82E;
+  border: 1px solid;
+  border-color: #2EB82E;
+  border-radius: 3px;
+  width: 85px;
+  height: 30px;
+  position: absolute;
+  top: 50px;
+  left: 65px;
+  cursor: hand;
+}

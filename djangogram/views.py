@@ -7,14 +7,21 @@ from django.urls import reverse_lazy
 from .forms import *
 from .models import *
 from django.contrib import messages
+from django.db.models import Q
+
 
 
 def index(request):
-    # Question.objects.filter(pub_date__lte=timezone.localtime(timezone.now())).order_by('-pub_date')[:7]
-    posts = Post.objects.all().order_by('-created_at')
-    context = {'posts': posts}
-    return render(request, 'home.html', context)
+    #posts = Post.objects.order_by('-created_at').all()
+    if request.user.is_authenticated:
+        user = request.user
+        posts = Post.objects.filter(author__in=request.user.following.all()).order_by('-created_at').all()
 
+        # blogs = models.Blog.objects.filter(contributors__in=request.user.follows.all())
+    #posts = Post.objects.filter(~Q(author=request.user, author__following__followers=request.user)).order_by('-created_at').all()
+        context = {'posts': posts}
+        return render(request, 'home.html', context)
+    return render(request, 'home.html')
 
 class SignUp(generic.CreateView):
     form_class = DUserCreationForm
@@ -88,7 +95,7 @@ def post_detail(request, post_id): #url /author/post_id
         if already_liked:
             like = Likes.objects.get(user=request.user.id, post=post.id)
             like.delete()
-        else:  # HERE
+        else:
             like = Likes(user=request.user, post=post)
             like.save()
         return redirect('post_detail', post_id=post_id)
@@ -104,4 +111,20 @@ def profile(request, username):
     if request.user == owner:
         return render(request, 'userprofile.html', context)
     else:
+        followed = True if request.user in owner.followers.all() else False
+        context['followed'] = followed
+        if request.method == 'POST':
+            if followed:
+                request.user.following.remove(owner)
+                request.user.save()
+            else:
+                request.user.following.add(owner)
+                request.user.save()
+            return redirect('profile', username=owner.username)
         return render(request, 'profile.html', context)
+
+
+# from djangogram.models import *
+# user = DUser.objects.get(id=1)
+# owner = DUser.objects.get(id=2)
+# follow = True if user in owner.followers.all() else False
