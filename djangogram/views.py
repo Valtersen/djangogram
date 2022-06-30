@@ -7,8 +7,6 @@ from django.urls import reverse_lazy
 from .forms import *
 from .models import *
 from django.contrib import messages
-from django.db.models import Q
-
 
 
 def index(request):
@@ -16,12 +14,10 @@ def index(request):
     if request.user.is_authenticated:
         user = request.user
         posts = Post.objects.filter(author__in=request.user.following.all()).order_by('-created_at').all()
-
-        # blogs = models.Blog.objects.filter(contributors__in=request.user.follows.all())
-    #posts = Post.objects.filter(~Q(author=request.user, author__following__followers=request.user)).order_by('-created_at').all()
         context = {'posts': posts}
         return render(request, 'home.html', context)
     return render(request, 'home.html')
+
 
 class SignUp(generic.CreateView):
     form_class = DUserCreationForm
@@ -123,8 +119,3 @@ def profile(request, username):
             return redirect('profile', username=owner.username)
         return render(request, 'profile.html', context)
 
-
-# from djangogram.models import *
-# user = DUser.objects.get(id=1)
-# owner = DUser.objects.get(id=2)
-# follow = True if user in owner.followers.all() else False
