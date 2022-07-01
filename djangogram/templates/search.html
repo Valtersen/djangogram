@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Search result{% endblock %}
+
+{% block content %}
+<p><a href="{% url 'home' %}">Home</a></p>
+<p><a href="{% url 'logout' %}">Log Out</a></p>
+
+<form action="{% url 'search' %}" method="get" style="margin:left;max-width:300px">
+    <input name="query" type="text" placeholder="search user">
+    <button type="submit"><i class="fa fa-search"></i></button>
+</form>
+
+<ul>
+    {% for user in result %}
+        <li>
+            <a href="{% url 'profile' user.username %}"><h3>{{ user.username }}</h3></a>
+            <p>     {{ user.bio }}</p>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

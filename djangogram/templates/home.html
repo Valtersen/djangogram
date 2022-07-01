@@ -14,6 +14,10 @@
 <p><a href="{% url 'logout' %}">Log Out</a></p>
 <p><a href="{% url 'create_post' %}">Create post</a></p>
 
+<form action="{% url 'search' %}" method="get" style="margin:left;max-width:300px">
+    <input name="query" type="text" placeholder="search user">
+    <button type="submit"><i class="fa fa-search"></i></button>
+</form>
 
 {% if posts%}
 <ul>

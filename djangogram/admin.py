@@ -14,6 +14,7 @@ from .models import *
 # anotherOne ohugh4321
 # labaza fgdzzhzhFDVVZ
 # EWANXNGFHX dsVVSBfSBfbe
+# cool_user13 dfghjklzxcvbn
 
 class DUserAdmin(UserAdmin):
     add_form = DUserCreationForm
@@ -26,7 +27,9 @@ class DUserAdmin(UserAdmin):
         ('Time related', {'fields': ('last_login', 'date_joined')}),
         ('Other', {'fields': ('is_active', 'is_superuser', 'is_staff', 'user_permissions')}),
         ('Follow', {'fields': ('following',)})
+
     )
+    filter_horizontal = ('following',)
 
 
 admin.site.register(DUser, DUserAdmin)

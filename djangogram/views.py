@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.views import generic
@@ -10,7 +11,6 @@ from django.contrib import messages
 
 
 def index(request):
-    #posts = Post.objects.order_by('-created_at').all()
     if request.user.is_authenticated:
         user = request.user
         posts = Post.objects.filter(author__in=request.user.following.all()).order_by('-created_at').all()
@@ -100,7 +100,7 @@ def post_detail(request, post_id): #url /author/post_id
 
 @login_required
 def profile(request, username):
-    owner = DUser.objects.get(username=username)
+    owner = get_object_or_404(DUser, username=username)
     posts = owner.posts.all().order_by('-created_at')
     context = {'posts': posts, 'owner': owner}
 
@@ -118,4 +118,15 @@ def profile(request, username):
                 request.user.save()
             return redirect('profile', username=owner.username)
         return render(request, 'profile.html', context)
+
+
+def search_user(request):
+
+    query = request.GET.get('query')
+    try:
+        result = DUser.objects.filter(Q(username__icontains=query) | Q(bio__icontains=query)).all()
+    except DUser.DoesNotExist:
+        result = None
+    context = {'result': result}
+    return render(request, 'search.html', context)
 

@@ -62,3 +62,5 @@ class Likes(models.Model):
 
     def __str__(self):
         return f"post: {self.post}, user: {self.user}"
+
+

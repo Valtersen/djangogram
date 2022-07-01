@@ -12,7 +12,7 @@
 {% endif %}
 <p>joined: {{ owner.date_joined }}</p>
 
-<form action="{% url 'profile' owner.username %}" method="post">
+<form action="{% url 'profile' owner.username %}" method="post" name="following">
 {% csrf_token %}
 {% if followed %}
     <button id="followed-button">Unfollow</button>>
