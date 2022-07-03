@@ -3,11 +3,12 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<p><a href="{% url 'home' %}">Home</a></p>
-<p><a href="{% url 'logout' %}">Log Out</a></p>
-<p><a href="{% url 'create_post' %}">Create post</a></p>
-<p><a href="{% url 'edituser' %}">Edit account</a></p>
-
+<p>
+    <span class="nowrap"><a href="{% url 'home' %}">Home</a></span>
+    <span class="nowrap"><a href="{% url 'logout' %}">Log Out</a></span>
+    <span class="nowrap"><a href="{% url 'edituser' %}">Edit account</a></span>
+    <span class="nowrap"><a href="{% url 'create_post' %}">Create post</a></span>
+</p>
 
 <p>username: {{ owner.username }}</p>
 <p>bio: {{ owner.bio }}</p>
@@ -15,12 +16,15 @@
 <p>pic: <img src="{{ owner.avatar.url }}"/></p>
 {% endif %}
 <p>joined: {{ owner.date_joined }}</p>
+<p> </p>
+
+<p>{{ followers }} follower{{ followers|pluralize }}</p>
+<p>{{ following }} following</p>
 
 <h1>Posts:</h1>
 {% if posts%}
 <ul>
     {% for post in posts %}
-        <p><a href="{% url 'edit_post' post.id %}">edit post</a></p>
         <li>
             <h2><a href="{% url 'post_detail' post.id %}">{{post.caption}}</a></h2>
             <p>author: <a href="{% url 'profile' post.author.username %}">{{ post.author.username }}</a></p>
@@ -29,6 +33,7 @@
             <p>pics: <img src="{{ image.image.url }}"/></p>
         {% endfor %}
             <p>created at: {{ post.created_at }}</p>
+            <p><a href="{% url 'edit_post' post.id %}">edit post</a></p>
         </li>
     {% endfor %}
 </ul>

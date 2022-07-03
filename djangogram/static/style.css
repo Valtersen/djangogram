@@ -28,3 +28,6 @@
   left: 65px;
   cursor: hand;
 }
+.nowrap {
+  white-space: nowrap ;
+}

@@ -3,15 +3,26 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<p><a href="{% url 'home' %}">Home</a></p>
-<p><a href="{% url 'logout' %}">Log Out</a></p>
+
+<p>
+    <span class="nowrap"><a href="{% url 'home' %}">Home</a></span>
+    <span class="nowrap"><a href="{% url 'logout' %}">Log Out</a></span>
+</p>
+
 <p>username: {{ owner.username }}</p>
 <p>bio: {{ owner.bio }}</p>
 {% if owner.avatar %}
 <p>pic: <img src="{{ owner.avatar.url }}"/></p>
 {% endif %}
 <p>joined: {{ owner.date_joined }}</p>
+<p> </p>
 
+
+<p>{{ followers }} follower</p>
+<p>{{ following }} following</p>
+{% if follows %}
+<p>Follows you</p>
+{% endif %}
 <form action="{% url 'profile' owner.username %}" method="post" name="following">
 {% csrf_token %}
 {% if followed %}

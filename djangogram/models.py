@@ -8,7 +8,7 @@ class DUser(AbstractUser):
     email = models.EmailField(max_length=254)
     avatar = models.ImageField(default='default.png', null=True, upload_to='avatars')
     bio = models.CharField(max_length=200, blank=True)
-    following = models.ManyToManyField('self', symmetrical=False, related_name='followers', blank=True, null=True)
+    following = models.ManyToManyField('self', symmetrical=False, related_name='followers', blank=True)
 
     # resizing images
     def save(self, *args, **kwargs):
@@ -64,3 +64,16 @@ class Likes(models.Model):
         return f"post: {self.post}, user: {self.user}"
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length=60)
+
+    def __str__(self):
+        return self.name
+
+
+class TagPost(models.Model):
+    post = models.ForeignKey(Post, null=True, on_delete=models.CASCADE)
+    tag = models.ForeignKey(Tag, null=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"post: {self.post}, tag: {self.tag}"

@@ -80,7 +80,7 @@ def edit_post(request, post_id):
         form = PostForm(instance=post)
         image_form = PostChangeImageForm
 
-    return render(request, 'create_post.html', {'form': form, 'image_form': image_form})
+    return render(request, 'create_post.html', {'form': form, 'image_form': image_form, 'edit': True, 'post_id': post_id})
 
 
 @login_required
@@ -95,20 +95,36 @@ def post_detail(request, post_id): #url /author/post_id
             like = Likes(user=request.user, post=post)
             like.save()
         return redirect('post_detail', post_id=post_id)
-    return render(request, 'post_detail.html', {'post': post, 'liked': already_liked, 'total':post.likes.count() })
+    return render(request, 'post_detail.html', {'post': post, 'liked': already_liked, 'total': post.likes.count()})
+
+
+@login_required()
+def delete_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.user != post.author: #add error
+        pass
+    post.delete()
+    return redirect('home')
+
 
 
 @login_required
 def profile(request, username):
     owner = get_object_or_404(DUser, username=username)
     posts = owner.posts.all().order_by('-created_at')
-    context = {'posts': posts, 'owner': owner}
+
+    followers = owner.followers.count()
+    following = owner.following.count()
+
+    context = {'posts': posts, 'owner': owner, 'followers': followers, 'following': following}
 
     if request.user == owner:
         return render(request, 'userprofile.html', context)
     else:
         followed = True if request.user in owner.followers.all() else False
+        follows = True if request.user in owner.following.all() else False
         context['followed'] = followed
+        context['follows'] = follows
         if request.method == 'POST':
             if followed:
                 request.user.following.remove(owner)
