@@ -44,6 +44,7 @@ class PostImageForm(forms.ModelForm):
     class Meta:
         model = PostImage
         fields = ('image',)
+
         widgets = {
             'image': ClearableFileInput(attrs={'multiple': True})
         }
@@ -62,3 +63,6 @@ class PostChangeImageForm(forms.ModelForm):
         labels = {
             'image': 'Add image/s to post'
         }
+
+
+# ADD TAG / CREATE TAG

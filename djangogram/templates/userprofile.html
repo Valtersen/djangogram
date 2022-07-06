@@ -30,7 +30,7 @@
             <p>author: <a href="{% url 'profile' post.author.username %}">{{ post.author.username }}</a></p>
             <p>{{post.text}}</p>
         {% for image in post.images.all %}
-            <p>pics: <img src="{{ image.image.url }}"/></p>
+            <p><img src="{{ image.image.url }}"/></p>
         {% endfor %}
             <p>created at: {{ post.created_at }}</p>
             <p><a href="{% url 'edit_post' post.id %}">edit post</a></p>

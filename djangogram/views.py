@@ -12,7 +12,6 @@ from django.contrib import messages
 
 def index(request):
     if request.user.is_authenticated:
-        user = request.user
         posts = Post.objects.filter(author__in=request.user.following.all()).order_by('-created_at').all()
         context = {'posts': posts}
         return render(request, 'home.html', context)
@@ -87,6 +86,7 @@ def edit_post(request, post_id):
 def post_detail(request, post_id): #url /author/post_id
     post = get_object_or_404(Post, id=post_id)
     already_liked = True if request.user.id in post.likes.values_list('user', flat=True) else False
+    tags_post = TagPost.objects.all().select_related('post', 'tag').filter(post__id__contains=10)
     if request.method == 'POST':
         if already_liked:
             like = Likes.objects.get(user=request.user.id, post=post.id)
@@ -95,7 +95,13 @@ def post_detail(request, post_id): #url /author/post_id
             like = Likes(user=request.user, post=post)
             like.save()
         return redirect('post_detail', post_id=post_id)
-    return render(request, 'post_detail.html', {'post': post, 'liked': already_liked, 'total': post.likes.count()})
+    context = {
+        'post': post,
+        'liked': already_liked,
+        'total': post.likes.count(),
+        'tags_post': tags_post
+    }
+    return render(request, 'post_detail.html', context)
 
 
 @login_required()

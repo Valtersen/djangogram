@@ -12,8 +12,17 @@
 <h2>{{post.caption}}</h2>
             <p>author: <a href="{% url 'profile' post.author.username %}">{{ post.author.username }}</a></p>
             <p>{{post.text}}</p>
+        {% if tags_post %}
+            <p>tags:
+            {% for obj in tags_post %}
+                <span class="nowrap"><a href="">#{{obj.tag.name}}</a></span>
+            {% endfor %}
+            </p>
+        {% endif %}
+
+
         {% for image in post.images.all %}
-            <p>pics: <img src="{{ image.image.url }}"/></p>
+            <p><img src="{{ image.image.url }}"/></p>
         {% endfor %}
         <p>created at: {{ post.created_at }}</p>
         <p>Likes: {{total}}</p>

@@ -72,8 +72,12 @@ class Tag(models.Model):
 
 
 class TagPost(models.Model):
-    post = models.ForeignKey(Post, null=True, on_delete=models.CASCADE)
-    tag = models.ForeignKey(Tag, null=True, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, null=True, on_delete=models.CASCADE, related_name='tag')
+    tag = models.ForeignKey(Tag, null=True, on_delete=models.CASCADE, related_name='post')
 
     def __str__(self):
         return f"post: {self.post}, tag: {self.tag}"
+
+# query = TagPost.objects.all().select_related('post', 'tag').filter(post__id__contains=10)
+# for q in query: q.tag.name
+

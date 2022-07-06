@@ -38,5 +38,8 @@ admin.site.unregister(Group)
 admin.site.register(Post)
 admin.site.register(PostImage)
 
+admin.site.register(Tag)
+admin.site.register(TagPost)
+
 admin.site.register(Likes)
 
