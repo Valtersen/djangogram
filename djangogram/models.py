@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from PIL import Image
+from taggit.managers import TaggableManager
 
 
 class DUser(AbstractUser):
@@ -31,6 +32,7 @@ class Post(models.Model):
     text = models.CharField(max_length=2200)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    tags = TaggableManager()
 
     def __str__(self):
         return self.caption
@@ -63,21 +65,4 @@ class Likes(models.Model):
     def __str__(self):
         return f"post: {self.post}, user: {self.user}"
 
-
-class Tag(models.Model):
-    name = models.CharField(max_length=60)
-
-    def __str__(self):
-        return self.name
-
-
-class TagPost(models.Model):
-    post = models.ForeignKey(Post, null=True, on_delete=models.CASCADE, related_name='tag')
-    tag = models.ForeignKey(Tag, null=True, on_delete=models.CASCADE, related_name='post')
-
-    def __str__(self):
-        return f"post: {self.post}, tag: {self.tag}"
-
-# query = TagPost.objects.all().select_related('post', 'tag').filter(post__id__contains=10)
-# for q in query: q.tag.name
 

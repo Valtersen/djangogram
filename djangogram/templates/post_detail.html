@@ -14,8 +14,8 @@
             <p>{{post.text}}</p>
         {% if tags_post %}
             <p>tags:
-            {% for obj in tags_post %}
-                <span class="nowrap"><a href="">#{{obj.tag.name}}</a></span>
+            {% for tag in tags_post %}
+                <span class="nowrap"><a href="{% url 'posts_with_tag' tag %}">#{{tag}}</a></span>
             {% endfor %}
             </p>
         {% endif %}

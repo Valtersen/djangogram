@@ -16,6 +16,7 @@ from .models import *
 # EWANXNGFHX dsVVSBfSBfbe
 # cool_user13 dfghjklzxcvbn
 
+
 class DUserAdmin(UserAdmin):
     add_form = DUserCreationForm
     form = DUserChangeForm
@@ -37,9 +38,6 @@ admin.site.unregister(Group)
 
 admin.site.register(Post)
 admin.site.register(PostImage)
-
-admin.site.register(Tag)
-admin.site.register(TagPost)
 
 admin.site.register(Likes)
 

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}tag{% endblock %}
+
+{% block content %}
+<p>
+    <span class="nowrap"><a href="{% url 'home' %}">Home</a></span>
+    <span class="nowrap"><a href="{% url 'logout' %}">Log Out</a></span>
+</p>
+
+<ul>
+    {% for post in posts %}
+        <li>
+            <h2><a href="{% url 'post_detail' post.id %}">{{post.caption}}</a></h2>
+            <p>author: <a href="{% url 'profile' post.author.username %}">{{ post.author.username }}</a></p>
+            <p>tags:
+            {% for tag in tags_post %}
+                <span class="nowrap"><a href="{% url 'posts_with_tag' tag %}">#{{tag}}</a></span>
+            {% endfor %}
+            </p>
+            <p>{{post.text}}</p>
+        {% for image in post.images.all %}
+            <p><img src="{{ image.image.url }}"/></p>
+        {% endfor %}
+            <p>created at: {{ post.created_at }}</p>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

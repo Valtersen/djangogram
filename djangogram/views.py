@@ -48,6 +48,7 @@ def create_post(request):
             post = form.save(commit=False)
             post.author = request.user
             post.save()
+            form.save_m2m()
 
             for i in images:
                 image = PostImage(image=i, post=post)
@@ -63,6 +64,8 @@ def create_post(request):
 @login_required
 def edit_post(request, post_id):
     post = Post.objects.get(id=post_id)
+    if request.user != post.author:
+        return redirect('home')
     if request.method == 'POST':
 
         form = PostForm(request.POST, instance=post)
@@ -70,7 +73,6 @@ def edit_post(request, post_id):
         images = request.FILES.getlist('image')
         if form.is_valid() and image_form.is_valid():
             form.save()
-
             for i in images:
                 image = PostImage(image=i, post=post)
                 image.save()
@@ -86,7 +88,7 @@ def edit_post(request, post_id):
 def post_detail(request, post_id): #url /author/post_id
     post = get_object_or_404(Post, id=post_id)
     already_liked = True if request.user.id in post.likes.values_list('user', flat=True) else False
-    tags_post = TagPost.objects.all().select_related('post', 'tag').filter(post__id__contains=10)
+    tags_post = list(post.tags.all())
     if request.method == 'POST':
         if already_liked:
             like = Likes.objects.get(user=request.user.id, post=post.id)
@@ -107,8 +109,8 @@ def post_detail(request, post_id): #url /author/post_id
 @login_required()
 def delete_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    if request.user != post.author: #add error
-        pass
+    if request.user != post.author:
+        return redirect('home')
     post.delete()
     return redirect('home')
 
@@ -145,10 +147,12 @@ def profile(request, username):
 def search_user(request):
 
     query = request.GET.get('query')
-    try:
-        result = DUser.objects.filter(Q(username__icontains=query) | Q(bio__icontains=query)).all()
-    except DUser.DoesNotExist:
-        result = None
+    result = DUser.objects.filter(Q(username__icontains=query) | Q(bio__icontains=query)).all()
     context = {'result': result}
     return render(request, 'search.html', context)
 
+
+def posts_with_tag(request, tag):
+    posts = Post.objects.filter(tags__name__icontains=tag).all()
+    context = {'posts': posts, 'tag':tag}
+    return render(request, 'posts_tag.html', context)

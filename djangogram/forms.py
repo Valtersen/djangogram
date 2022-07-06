@@ -37,7 +37,7 @@ class DUserAvatarForm(forms.ModelForm):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('caption', 'text')
+        fields = ('caption', 'text', 'tags')
 
 
 class PostImageForm(forms.ModelForm):
@@ -64,5 +64,3 @@ class PostChangeImageForm(forms.ModelForm):
             'image': 'Add image/s to post'
         }
 
-
-# ADD TAG / CREATE TAG

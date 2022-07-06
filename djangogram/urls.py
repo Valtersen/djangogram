@@ -16,5 +16,6 @@ urlpatterns = [
     path('post/<int:post_id>', views.post_detail, name='post_detail'),
     path('post/<int:post_id>/delete', views.delete_post, name='delete_post'),
     path('search/', views.search_user, name='search'),
+    path('tag/<str:tag>', views.posts_with_tag, name='posts_with_tag'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
