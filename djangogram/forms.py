@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ClearableFileInput
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm
 from .models import *
 
 
@@ -12,6 +12,12 @@ class DUserCreationForm(UserCreationForm):
             'bio': forms.Textarea(attrs={'rows': 3}),
             'avatar': ClearableFileInput(),
         }
+
+    def signup(self, request, user):
+        user.username = self.cleaned_data['username']
+        user.email = self.cleaned_data['email']
+        user.avatar = self.cleaned_data['avatar']
+        user.bio = self.cleaned_data['bio']
 
 
 class DUserChangeForm(forms.ModelForm):

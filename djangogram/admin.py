@@ -15,13 +15,14 @@ from .models import *
 # labaza fgdzzhzhFDVVZ
 # EWANXNGFHX dsVVSBfSBfbe
 # cool_user13 dfghjklzxcvbn
+# valterll dfkz123456
 
 
 class DUserAdmin(UserAdmin):
     add_form = DUserCreationForm
     form = DUserChangeForm
     model = DUser
-    list_display = ["username", 'is_superuser', 'date_joined', 'last_login']
+    list_display = ["username", 'is_superuser', 'date_joined', 'last_login', 'email']
 
     fieldsets = (
         (None, {'fields': ('username', 'email', 'avatar', 'bio', 'password')}),

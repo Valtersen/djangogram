@@ -4,7 +4,6 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
 <p>Hi <a href="{% url 'profile' user.username %}">{{ user.username }}</a></p>
 <p>bio: {{ user.bio }}</p>
 {% if user.avatar %}
@@ -12,7 +11,7 @@
 {% endif %}
 <p>
     <span class="nowrap"><a href="{% url 'edituser' %}">Edit account</a></span>
-    <span class="nowrap"><a href="{% url 'logout' %}">Log Out</a></span>
+    <span class="nowrap"><a href="{% url 'account_logout' %}">Log Out</a></span>
     <span class="nowrap"><a href="{% url 'create_post' %}">Create post</a></span>
 </p>
 
@@ -38,11 +37,4 @@
 {% else %}
 <p>No posts available</p>
 {% endif %}
-
-
-{% else %}
-<p>You are not logged in</p>
-<a href="{% url 'login' %}">Log In</a>
-<a href="{% url 'signup' %}">Sign Up</a>
-{% endif %}
-{% endblock%}
+{% endblock %}

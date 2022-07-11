@@ -11,7 +11,10 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
 from pathlib import Path
-from django.urls import reverse, reverse_lazy
+import django
+#django.setup()
+#import djangogram.forms as forms
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,16 +35,27 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    # 'djangogram.apps.djangogramConfig'
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'djangogram',
     'taggit',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
+
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -131,8 +145,39 @@ AUTH_USER_MODEL = 'djangogram.DUser'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-LOGIN_REDIRECT_URL = 'logged_in'
+LOGIN_REDIRECT_URL = 'home'
 
 LOGOUT_REDIRECT_URL = 'home'
+
+ACCOUNT_EMAIL_VERIFICATION = "mandatory" #optional'
+
+ACCOUNT_EMAIL_REQUIRED = True
+
+ACCOUNT_SIGNUP_FORM_CLASS = 'djangogram.forms.DUserCreationForm'
+
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = 'home'
+
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = 'home'
+
+ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
+
+ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
+
+
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    #EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+
+# EMAIL_HOST = 'smtp.gmail.com'
+#
+# EMAIL_PORT = 587
+#
+# EMAIL_HOST_USER = 'labza.valentina@gmail.com'
+#
+# EMAIL_HOST_PASSWORD = 'dfkz.0191'
+
+EMAIL_USE_TLS = True
+
+EMAIL_USE_SSH = True
 
 

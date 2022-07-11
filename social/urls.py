@@ -23,8 +23,9 @@ from django.views.generic.base import RedirectView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', RedirectView.as_view(url='djangogram/'), name='index'),
-    path('djangogram/', include('django.contrib.auth.urls')),
-    path('djangogram/', include('djangogram.urls'))
+    path('djangogram/', include('allauth.urls')),
+    path('djangogram/', include('djangogram.urls')),
+    # path('accounts/', include('allauth.urls')),
 ]
 
 

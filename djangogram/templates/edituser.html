@@ -6,16 +6,18 @@
 
 <p>
     <span class="nowrap"><a href="{% url 'home' %}">Home</a></span>
-    <span class="nowrap"><a href="{% url 'logout' %}">Log Out</a></span>
+    <span class="nowrap"><a href="{% url 'account_logout' %}">Log Out</a></span>
+
 </p>
 
 <h1>Edit</h1>
+<p><a href="{% url 'account_email' %}">Manage email</a></p>
+<p><a href="{% url 'account_change_password' %}">Change password</a></p>
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
 
     <button type="submit">Edit</button>
-
 
 </form>
 {% endblock %}

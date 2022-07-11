@@ -15,13 +15,8 @@ def index(request):
         posts = Post.objects.filter(author__in=request.user.following.all()).order_by('-created_at').all()
         context = {'posts': posts}
         return render(request, 'home.html', context)
-    return render(request, 'home.html')
-
-
-class SignUp(generic.CreateView):
-    form_class = DUserCreationForm
-    success_url = reverse_lazy('login')
-    template_name = 'registration/signup.html'
+    else:
+        return redirect('account_login')
 
 
 @login_required
@@ -35,7 +30,7 @@ def edit_user(request):
     else:
         form = DUserChangeForm(instance=request.user)
 
-    return render(request, 'edituser.html', {'form': form,})
+    return render(request, 'edituser.html', {'form': form, })
 
 
 @login_required
@@ -85,7 +80,7 @@ def edit_post(request, post_id):
 
 
 @login_required
-def post_detail(request, post_id): #url /author/post_id
+def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     already_liked = True if request.user.id in post.likes.values_list('user', flat=True) else False
     tags_post = list(post.tags.all())
@@ -113,7 +108,6 @@ def delete_post(request, post_id):
         return redirect('home')
     post.delete()
     return redirect('home')
-
 
 
 @login_required
@@ -145,10 +139,11 @@ def profile(request, username):
 
 
 def search_user(request):
-
-    query = request.GET.get('query')
-    result = DUser.objects.filter(Q(username__icontains=query) | Q(bio__icontains=query)).all()
-    context = {'result': result}
+    context = {}
+    if request.GET.get('query'):
+        query = request.GET.get('query')
+        result = DUser.objects.filter(Q(username__icontains=query) | Q(bio__icontains=query)).all()
+        context = {'result': result}
     return render(request, 'search.html', context)
 
 
@@ -156,3 +151,7 @@ def posts_with_tag(request, tag):
     posts = Post.objects.filter(tags__name__icontains=tag).all()
     context = {'posts': posts, 'tag':tag}
     return render(request, 'posts_tag.html', context)
+
+
+
+
