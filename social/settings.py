@@ -28,6 +28,7 @@ SECRET_KEY = 'django-insecure-vufjclp8qq2gl#hjs2u+qx0*u31^egite8u8cl^)13*%qpd7j(
 
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -94,10 +95,10 @@ WSGI_APPLICATION = 'social.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'djangogram',
-        'USER': 'postgres',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',
+        'NAME': 'd2vcb6s89uvnrc',
+        'USER': 'huaswolmztxwix',
+        'PASSWORD': 'cde4b518f89e6d5a5657c757abc00a7a4b5370810c001f7986ffc254c05e35b0',
+        'HOST': 'ec2-54-75-184-144.eu-west-1.compute.amazonaws.com',
         'PORT': '5432',
     }
 }
