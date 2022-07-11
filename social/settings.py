@@ -149,7 +149,7 @@ LOGIN_REDIRECT_URL = 'home'
 
 LOGOUT_REDIRECT_URL = 'home'
 
-ACCOUNT_EMAIL_VERIFICATION = "mandatory" #optional'
+ACCOUNT_EMAIL_VERIFICATION = "optional"  # "mandatory"
 
 ACCOUNT_EMAIL_REQUIRED = True
 
@@ -166,15 +166,6 @@ ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
 
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    #EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
-
-# EMAIL_HOST = 'smtp.gmail.com'
-#
-# EMAIL_PORT = 587
-#
-# EMAIL_HOST_USER = 'labza.valentina@gmail.com'
-#
-# EMAIL_HOST_PASSWORD = 'dfkz.0191'
 
 EMAIL_USE_TLS = True
 
