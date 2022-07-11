@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-vufjclp8qq2gl#hjs2u+qx0*u31^egite8u8cl^)13*%qpd7j(
 DEBUG = True
 #DEBUG = False
 
-ALLOWED_HOSTS = ['https://djangogram-v.herokuapp.com/', '127.0.0.1']
+ALLOWED_HOSTS = ['djangogram-v.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
