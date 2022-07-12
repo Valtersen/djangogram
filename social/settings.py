@@ -149,8 +149,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'djangogram.DUser'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(STATIC_ROOT, 'media')
+
 
 LOGIN_REDIRECT_URL = 'home'
 
@@ -180,4 +179,14 @@ EMAIL_USE_SSH = True
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"  # WhiteNoise
 
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'hi1pjd7bl',
+    'API_KEY': '511966933532915',
+    'API_SECRET': 'N7nk081qV6JxV6daKv4JWzJNTL0',
+}
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(DEFAULT_FILE_STORAGE, 'media')  # os.path.join(STATIC_ROOT, 'media')
