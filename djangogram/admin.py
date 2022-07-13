@@ -8,14 +8,7 @@ from .models import *
 # valtersen DUser1234
 # miha miha4321
 # dusa ddd321321
-# loh pass4321
-# last_user nosense123
-# felt cute cute123456
-# anotherOne ohugh4321
-# labaza fgdzzhzhFDVVZ
-# EWANXNGFHX dsVVSBfSBfbe
-# cool_user13 dfghjklzxcvbn
-# valterll dfkz123456
+# misha mmm12345567
 
 
 class DUserAdmin(UserAdmin):
