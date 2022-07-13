@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from PIL import Image
 from taggit.managers import TaggableManager
 from io import BytesIO
-
+from cloudinary import CloudinaryImage
 
 class DUser(AbstractUser):
     username = models.CharField(max_length=35, unique=True)
@@ -13,28 +13,14 @@ class DUser(AbstractUser):
     following = models.ManyToManyField('self', symmetrical=False, related_name='followers', blank=True)
 
     # resizing images
-    def save(self, *args, **kwargs):
-        super().save()
-
-        image = Image.open(self.avatar)
-
-        if image.height > 200 or image.width > 200:
-            size = 200, 200
-
-            # Create a buffer to hold the bytes
-            imageBuffer = BytesIO()
-
-            # Resize
-            image.thumbnail(size, Image.ANTIALIAS)
-
-            # Save the image as jpeg to the buffer
-            image.save(imageBuffer, image.format)
-
-            # # CloudinaryImage("turtles.jpg").image(width=70, height=53, crop="scale")
-            # new_img = CloudinaryImage(img).image(width=200, height=200, crop="scale")
-            #img.thumbnail((200, 200))
-            # new_img.save(self.avatar) cv2.resize(img, (300,300))
-            #img.save(self.avatar, img.format)
+    # def save(self, *args, **kwargs):
+    #     super().save()
+    #
+    #     image = Image.open(self.avatar)
+    #
+    #     if image.height > 200 or image.width > 200:
+    #         new_image = image.resize((200, 200))
+    #         new_image.save(image, image.format)
 
     def __str__(self):
         return self.username

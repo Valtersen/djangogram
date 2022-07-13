@@ -20,7 +20,7 @@
             </p>
             <p>{{post.text}}</p>
         {% for image in post.images.all %}
-            <p><img src="{{ image.image.url }}"/></p>
+            <p><img class="post-image" src="{{ image.image.url }}"/></p>
         {% endfor %}
             <p>created at: {{ post.created_at }}</p>
         </li>

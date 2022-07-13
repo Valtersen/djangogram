@@ -13,7 +13,7 @@
 <p>username: {{ owner.username }}</p>
 <p>bio: {{ owner.bio }}</p>
 {% if owner.avatar %}
-<p>pic: <img src="{{ owner.avatar.url }}"/></p>
+<p><img class="avatar" src="{{ owner.avatar.url }}"/></p>
 {% endif %}
 <p>joined: {{ owner.date_joined }}</p>
 <p> </p>
@@ -30,7 +30,7 @@
             <p>author: <a href="{% url 'profile' post.author.username %}">{{ post.author.username }}</a></p>
             <p>{{post.text}}</p>
         {% for image in post.images.all %}
-            <p><img src="{{ image.image.url }}"/></p>
+            <p><img class="post-image" src="{{ image.image.url }}"/></p>
         {% endfor %}
             <p>created at: {{ post.created_at }}</p>
             <p><a href="{% url 'edit_post' post.id %}">edit post</a></p>
