@@ -7,7 +7,7 @@ from taggit.managers import TaggableManager
 class DUser(AbstractUser):
     username = models.CharField(max_length=35, unique=True)
     email = models.EmailField(max_length=254)
-    avatar = models.ImageField(default='default.png', null=True, upload_to='avatars')
+    avatar = models.ImageField(default='default_hdqd19.png', null=True, upload_to='avatars')
     bio = models.CharField(max_length=200, blank=True)
     following = models.ManyToManyField('self', symmetrical=False, related_name='followers', blank=True)
 
