@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'taggit',
     'allauth',
     'allauth.account',
+    'whitenoise.runserver_nostatic',
     'allauth.socialaccount',
 ]
 
@@ -107,7 +108,9 @@ USE_TZ = True
 
 
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+VENV_PATH = os.path.dirname(BASE_DIR)
+STATIC_ROOT = os.path.join(VENV_PATH, 'static_root')
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

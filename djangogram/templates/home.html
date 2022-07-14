@@ -1,13 +1,15 @@
 
 {% extends 'base.html' %}
 
+
 {% block title %}Home{% endblock %}
+
 
 {% block content %}
 <p>Hi <a href="{% url 'profile' user.username %}">{{ user.username }}</a></p>
 <p>bio: {{ user.bio }}</p>
 {% if user.avatar %}
-<p><img class="avatar" src="{{ user.avatar.url }}"/></p>
+<div class="avatar"><img class="avatar" src="{{ user.avatar.url }}"/></div>
 {% endif %}
 <p>
     <span class="nowrap"><a href="{% url 'edituser' %}">Edit account</a></span>
