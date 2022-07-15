@@ -26,8 +26,8 @@ INSTALLED_APPS = [
     'taggit',
     'allauth',
     'allauth.account',
-    'whitenoise.runserver_nostatic',
     'allauth.socialaccount',
+    'elasticemailbackend',
 ]
 
 SITE_ID = 1
@@ -73,9 +73,9 @@ WSGI_APPLICATION = 'social.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd2vcb6s89uvnrc',
-        'USER': 'huaswolmztxwix',
-        'PASSWORD': 'cde4b518f89e6d5a5657c757abc00a7a4b5370810c001f7986ffc254c05e35b0',
+        'NAME': os.environ.get('DB_NAME', ''),
+        'USER': os.environ.get('DB_USER', ''),
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
         'HOST': 'ec2-54-75-184-144.eu-west-1.compute.amazonaws.com',
         'PORT': '5432',
     }
@@ -136,23 +136,21 @@ ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
 
 ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
 
+ELASTICEMAIL_API_KEY = os.environ.get('ELASTICEMAIL_API_KEY', '')
 
-EMAIL_HOST = os.environ.get('MAILGUN_SMTP_SERVER', '')
-EMAIL_PORT = os.environ.get('MAILGUN_SMTP_PORT', '')
-EMAIL_HOST_USER = os.environ.get('MAILGUN_SMTP_LOGIN', '')
-EMAIL_HOST_PASSWORD = os.environ.get('MAILGUN_SMTP_PASSWORD', '')
+EMAIL_BACKEND = "elasticemailbackend.backend.ElasticEmailBackend"
 
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', '')
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'hi1pjd7bl',
-    'API_KEY': '511966933532915',
-    'API_SECRET': 'N7nk081qV6JxV6daKv4JWzJNTL0',
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME', ''),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY', ''),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', ''),
 }
 
-
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(DEFAULT_FILE_STORAGE, 'media')  # os.path.join(STATIC_ROOT, 'media')
+MEDIA_ROOT = os.path.join(DEFAULT_FILE_STORAGE, 'media')

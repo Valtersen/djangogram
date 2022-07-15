@@ -3,12 +3,6 @@ from django.contrib.auth.models import Group, User
 from django.contrib.auth.admin import UserAdmin
 from .forms import *
 from .models import *
-# valter django2022
-# anotherUser Userloh123
-# valtersen DUser1234
-# miha miha4321
-# dusa ddd321321
-# misha mmm12345567
 
 
 class DUserAdmin(UserAdmin):
