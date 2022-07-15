@@ -122,7 +122,7 @@ LOGIN_REDIRECT_URL = 'home'
 
 LOGOUT_REDIRECT_URL = 'home'
 
-ACCOUNT_EMAIL_VERIFICATION = "optional"  # "mandatory"
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"  # "optional"
 
 ACCOUNT_EMAIL_REQUIRED = True
 
