@@ -149,7 +149,7 @@ def search_user(request):
 
 def posts_with_tag(request, tag):
     posts = Post.objects.filter(tags__name__icontains=tag).all()
-    context = {'posts': posts, 'tag':tag}
+    context = {'posts': posts, 'tag': tag}
     return render(request, 'posts_tag.html', context)
 
 
