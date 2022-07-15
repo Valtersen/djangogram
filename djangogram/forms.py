@@ -18,6 +18,7 @@ class DUserCreationForm(UserCreationForm):
         user.email = self.cleaned_data['email']
         user.avatar = self.cleaned_data['avatar']
         user.bio = self.cleaned_data['bio']
+        user.save()
 
 
 class DUserChangeForm(forms.ModelForm):
