@@ -3,7 +3,7 @@ from django.test import Client
 from allauth.utils import get_user_model
 from allauth.account.models import EmailAddress
 from django.urls import reverse
-
+#from django.urls import reverse
 from social import settings
 
 
@@ -27,6 +27,9 @@ class TestViews(TestCase):
                                     {"Username": self.username, "Password": self.password})
         self.assertRedirects(response, settings.LOGIN_REDIRECT_URL, fetch_redirect_response=False)
 
+    def test_create_post(self):
+        url = reverse('create_post')
+        response = self.client.get(url)
 
-
-
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'create_post.html')
