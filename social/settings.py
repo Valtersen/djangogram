@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -9,7 +10,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-vufjclp8qq2gl#hjs2u+qx0*u31^egite8u8cl^)13*%qpd7j('
 
 DEBUG = True
-#DEBUG = False
+
+if os.environ.get('ON_HEROKU', ''):
+    DEBUG = False
+else:
+    DEBUG = True
+    load_dotenv()
+
 
 ALLOWED_HOSTS = ['djangogram-v.herokuapp.com', '127.0.0.1']
 
