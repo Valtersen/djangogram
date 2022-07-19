@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import sys
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -12,7 +13,8 @@ SECRET_KEY = 'django-insecure-vufjclp8qq2gl#hjs2u+qx0*u31^egite8u8cl^)13*%qpd7j(
 DEBUG = True
 
 if os.environ.get('ON_HEROKU', ''):
-    DEBUG = False
+    #DEBUG = False
+    DEBUG = True
 else:
     DEBUG = True
     load_dotenv()
@@ -87,6 +89,17 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+
+if 'test' in sys.argv:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'djangogram',
+        'USER': 'postgres',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
 
 
 AUTH_PASSWORD_VALIDATORS = [
