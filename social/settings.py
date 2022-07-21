@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 import sys
 
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -85,7 +84,7 @@ DATABASES = {
         'NAME': os.environ.get('DB_NAME', ''),
         'USER': os.environ.get('DB_USER', ''),
         'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-        'HOST': 'ec2-54-75-184-144.eu-west-1.compute.amazonaws.com',
+        'HOST': os.environ.get('DB_HOST', ''),
         'PORT': '5432',
     }
 }
@@ -94,10 +93,10 @@ DATABASES = {
 if 'test' in sys.argv:
     DATABASES['default'] = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'djangogram',
-        'USER': 'postgres',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',
+        'NAME': os.environ.get('DB_TEST_NAME', ''),
+        'USER': os.environ.get('DB_TEST_USER', ''),
+        'PASSWORD': os.environ.get('DB_TEST_PASSWORD', ''),
+        'HOST': os.environ.get('DB_TEST_HOST', ''),
         'PORT': '5432',
     }
 
@@ -142,7 +141,7 @@ LOGIN_REDIRECT_URL = 'home'
 
 LOGOUT_REDIRECT_URL = 'home'
 
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"  # "optional"
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 
 ACCOUNT_EMAIL_REQUIRED = True
 

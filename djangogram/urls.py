@@ -17,4 +17,3 @@ urlpatterns = [
     path('search/', views.search_user, name='search'),
     path('tag/<str:tag>', views.posts_with_tag, name='posts_with_tag'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-

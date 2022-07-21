@@ -12,7 +12,8 @@ from django.contrib import messages
 
 def index(request):
     if request.user.is_authenticated:
-        posts = Post.objects.filter(author__in=request.user.following.all()).order_by('-created_at').all()
+        posts = Post.objects.filter(
+            author__in=request.user.following.all()).order_by('-created_at').all()
         context = {'posts': posts}
         return render(request, 'home.html', context)
     else:
@@ -22,7 +23,10 @@ def index(request):
 @login_required
 def edit_user(request):
     if request.method == 'POST':
-        form = DUserChangeForm(request.POST, request.FILES, instance=request.user)
+        form = DUserChangeForm(
+            request.POST,
+            request.FILES,
+            instance=request.user)
         if form.is_valid():
             request.user.save()
             messages.success(request, "Profile was updated successfully")
@@ -53,7 +57,9 @@ def create_post(request):
         form = PostForm()
         image_form = PostImageForm()
 
-    return render(request, 'create_post.html', {'form': form, 'image_form': image_form})
+    return render(
+        request, 'create_post.html', {
+            'form': form, 'image_form': image_form})
 
 
 @login_required
@@ -76,13 +82,19 @@ def edit_post(request, post_id):
         form = PostForm(instance=post)
         image_form = PostChangeImageForm
 
-    return render(request, 'create_post.html', {'form': form, 'image_form': image_form, 'edit': True, 'post_id': post_id})
+    return render(request,
+                  'create_post.html',
+                  {'form': form,
+                   'image_form': image_form,
+                   'edit': True,
+                   'post_id': post_id})
 
 
 @login_required
 def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    already_liked = True if request.user.id in post.likes.values_list('user', flat=True) else False
+    already_liked = True if request.user.id in post.likes.values_list(
+        'user', flat=True) else False
     tags_post = list(post.tags.all())
     if request.method == 'POST':
         if already_liked:
@@ -118,7 +130,11 @@ def profile(request, username):
     followers = owner.followers.count()
     following = owner.following.count()
 
-    context = {'posts': posts, 'owner': owner, 'followers': followers, 'following': following}
+    context = {
+        'posts': posts,
+        'owner': owner,
+        'followers': followers,
+        'following': following}
 
     if request.user == owner:
         return render(request, 'userprofile.html', context)
@@ -142,7 +158,8 @@ def search_user(request):
     context = {}
     if request.GET.get('query'):
         query = request.GET.get('query')
-        result = DUser.objects.filter(Q(username__icontains=query) | Q(bio__icontains=query)).all()
+        result = DUser.objects.filter(
+            Q(username__icontains=query) | Q(bio__icontains=query)).all()
         context = {'result': result}
     return render(request, 'search.html', context)
 
@@ -151,7 +168,3 @@ def posts_with_tag(request, tag):
     posts = Post.objects.filter(tags__name__icontains=tag).all()
     context = {'posts': posts, 'tag': tag}
     return render(request, 'posts_tag.html', context)
-
-
-
-

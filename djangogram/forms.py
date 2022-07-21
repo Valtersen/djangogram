@@ -70,4 +70,3 @@ class PostChangeImageForm(forms.ModelForm):
         labels = {
             'image': 'Add image/s to post'
         }
-

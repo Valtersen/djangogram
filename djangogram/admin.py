@@ -9,7 +9,12 @@ class DUserAdmin(UserAdmin):
     add_form = DUserCreationForm
     form = DUserChangeForm
     model = DUser
-    list_display = ["username", 'is_superuser', 'date_joined', 'last_login', 'email']
+    list_display = [
+        "username",
+        'is_superuser',
+        'date_joined',
+        'last_login',
+        'email']
 
     fieldsets = (
         (None, {'fields': ('username', 'email', 'avatar', 'bio', 'password')}),
@@ -28,4 +33,3 @@ admin.site.register(Post)
 admin.site.register(PostImage)
 
 admin.site.register(Likes)
-

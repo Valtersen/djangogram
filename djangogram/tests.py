@@ -15,7 +15,8 @@ class TestViews(TestCase):
         self.email = 'smith@mail.com'
         self.password = "password1"
         self.bio = 'just a dude'
-        self.user = get_user_model().objects.create(username=self.username, email=self.email, bio=self.bio)
+        self.user = get_user_model().objects.create(
+            username=self.username, email=self.email, bio=self.bio)
         self.user.set_password(self.password)
         EmailAddress.objects.create(
             user=self.user,
@@ -32,7 +33,10 @@ class TestViews(TestCase):
 
     def test_home_redirect(self):
         response = self.client.get('/')
-        self.assertRedirects(response, '/djangogram/', fetch_redirect_response=False)
+        self.assertRedirects(
+            response,
+            '/djangogram/',
+            fetch_redirect_response=False)
 
     def test_profile(self):
         response = self.client.get('/djangogram/profile/john/')
@@ -51,7 +55,10 @@ class TestViews(TestCase):
             'tags': 'hi new tag',
         }
         response = self.client.post('/djangogram/create_post/', data)
-        self.assertRedirects(response, '/djangogram/', fetch_redirect_response=False)
+        self.assertRedirects(
+            response,
+            '/djangogram/',
+            fetch_redirect_response=False)
         post = Post.objects.get(caption='second post')
         self.assertEqual(post.text, 'hello')
         self.assertEqual(post.author.username, 'john')
@@ -77,7 +84,8 @@ class TestViews(TestCase):
         self.assertTrue(b'0 followers' in response.content)
 
         # create user to follow
-        follower = get_user_model().objects.create(username='follower', email='example@mail.com')
+        follower = get_user_model().objects.create(
+            username='follower', email='example@mail.com')
         follower.following.add(self.user)
         response = self.client.get('/djangogram/profile/john/')
         self.assertTrue(b'1 follower' in response.content)
@@ -97,12 +105,16 @@ class TestViews(TestCase):
             'tags': 'new, first post'
         }
         response = self.client.post(f'/djangogram/edit_post/{post.id}', data)
-        self.assertRedirects(response, '/djangogram/', fetch_redirect_response=False)
+        self.assertRedirects(
+            response,
+            '/djangogram/',
+            fetch_redirect_response=False)
         response = self.client.get(f'/djangogram/post/{post.id}')
         self.assertTrue(b'1st post' in response.content)
 
     def test_feed_and_likes(self):
-        post_creator = get_user_model().objects.create(username='poster', email='example@email.com')
+        post_creator = get_user_model().objects.create(
+            username='poster', email='example@email.com')
         post_creator.save()
         post = Post(author=post_creator, caption='example post', text='text.')
         post.save()
