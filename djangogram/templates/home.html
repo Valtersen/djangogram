@@ -1,0 +1,42 @@
+
+{% extends 'base.html' %}
+
+
+{% block title %}Home{% endblock %}
+
+
+{% block content %}
+<p>Hi <a href="{% url 'profile' user.username %}">{{ user.username }}</a></p>
+<p>bio: {{ user.bio }}</p>
+{% if user.avatar %}
+<div class="avatar"><img class="avatar" src="{{ user.avatar.url }}"/></div>
+{% endif %}
+<p>
+    <span class="nowrap"><a href="{% url 'edituser' %}">Edit account</a></span>
+    <span class="nowrap"><a href="{% url 'account_logout' %}">Log Out</a></span>
+    <span class="nowrap"><a href="{% url 'create_post' %}">Create post</a></span>
+</p>
+
+<form action="{% url 'search' %}" method="get" style="margin:left;max-width:300px">
+    <input name="query" type="text" placeholder="search user">
+    <button type="submit"><i class="fa fa-search"></i></button>
+</form>
+
+{% if posts%}
+<ul>
+    {% for post in posts %}
+        <li>
+            <h2><a href="{% url 'post_detail' post.id %}">{{post.caption}}</a></h2>
+            <p>author: <a href="{% url 'profile' post.author.username %}">{{ post.author.username }}</a></p>
+            <p>{{post.text}}</p>
+        {% for image in post.images.all %}
+            <p><img class="post-image" src="{{ image.image.url }}"/></p>
+        {% endfor %}
+            <p>created at: {{ post.created_at }}</p>
+        </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No posts available</p>
+{% endif %}
+{% endblock %}

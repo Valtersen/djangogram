@@ -1,0 +1,39 @@
+#follow-button {
+  color: #3399FF;
+  font-family: "Helvetica";
+  font-size: 10pt;
+  background-color: #ffffff;
+  border: 1px solid;
+  border-color: #3399FF;
+  border-radius: 3px;
+  width: 85px;
+  height: 30px;
+  cursor: hand;
+}
+#followed-button{
+  color: #3399FF;
+  font-family: "Helvetica";
+  font-size: 10pt;
+  background-color: #ffffff;
+  border: 1px solid;
+  border-color: #3399FF;
+  border-radius: 3px;
+  width: 85px;
+  height: 30px;
+  cursor: hand;
+}
+.nowrap {
+  white-space: nowrap ;
+}
+
+.avatar {
+width: 200px;
+height: 200px;
+object-fit: cover;
+}
+
+.post-image {
+width: 500px;
+height: 500px;
+object-fit: cover;
+}
