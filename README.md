@@ -1,3 +1,3 @@
-# Task 12 Create basic application
+# Djangogram
 
 https://djangogram-v.herokuapp.com/
