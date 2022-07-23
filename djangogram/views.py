@@ -96,14 +96,6 @@ def post_detail(request, post_id):
     already_liked = True if request.user.id in post.likes.values_list(
         'user', flat=True) else False
     tags_post = list(post.tags.all())
-    if request.method == 'POST':
-        if already_liked:
-            like = Likes.objects.get(user=request.user.id, post=post.id)
-            like.delete()
-        else:
-            like = Likes(user=request.user, post=post)
-            like.save()
-        return redirect('post_detail', post_id=post_id)
     context = {
         'post': post,
         'liked': already_liked,
@@ -111,6 +103,20 @@ def post_detail(request, post_id):
         'tags_post': tags_post
     }
     return render(request, 'post_detail.html', context)
+
+
+@login_required()
+def like(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.user == post.author:
+        return redirect('post_detail', post_id=post_id)
+    if Likes.objects.filter(user=request.user.id, post=post.id).exists():
+        like = Likes.objects.get(user=request.user.id, post=post.id)
+        like.delete()
+    else:
+        like = Likes(user=request.user, post=post)
+        like.save()
+    return redirect('post_detail', post_id=post_id)
 
 
 @login_required()
@@ -143,17 +149,23 @@ def profile(request, username):
         follows = True if request.user in owner.following.all() else False
         context['followed'] = followed
         context['follows'] = follows
-        if request.method == 'POST':
-            if followed:
-                request.user.following.remove(owner)
-                request.user.save()
-            else:
-                request.user.following.add(owner)
-                request.user.save()
-            return redirect('profile', username=owner.username)
         return render(request, 'profile.html', context)
 
 
+@login_required()
+def follow(request, username):
+    owner = get_object_or_404(DUser, username=username)
+    followed = True if request.user in owner.followers.all() else False
+    if followed:
+        request.user.following.remove(owner)
+        request.user.save()
+    else:
+        request.user.following.add(owner)
+        request.user.save()
+    return redirect('profile', username=owner.username)
+
+
+@login_required()
 def search_user(request):
     context = {}
     if request.GET.get('query'):
@@ -164,6 +176,7 @@ def search_user(request):
     return render(request, 'search.html', context)
 
 
+@login_required()
 def posts_with_tag(request, tag):
     posts = Post.objects.filter(tags__name__icontains=tag).all()
     context = {'posts': posts, 'tag': tag}

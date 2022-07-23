@@ -23,7 +23,7 @@
 {% if follows %}
 <p>Follows you</p>
 {% endif %}
-<form action="{% url 'profile' owner.username %}" method="post" name="following">
+<form action="{% url 'follow' owner.username %}" method="post" name="following">
 {% csrf_token %}
 {% if followed %}
     <button id="followed-button">Unfollow</button>
@@ -50,4 +50,3 @@
 <p>No posts available</p>
 {% endif %}
 {% endblock%}
-
