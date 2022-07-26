@@ -1,10 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
-from django.utils import timezone
-from django.views import generic
-from django.contrib.auth.forms import *
-from django.urls import reverse_lazy
 from .forms import *
 from .models import *
 from django.contrib import messages
@@ -29,8 +26,7 @@ def edit_user(request):
             instance=request.user)
         if form.is_valid():
             request.user.save()
-            messages.success(request, "Profile was updated successfully")
-            return redirect('home')
+            return redirect('profile', request.user.username)
     else:
         form = DUserChangeForm(instance=request.user)
 
@@ -52,7 +48,7 @@ def create_post(request):
             for i in images:
                 image = PostImage(image=i, post=post)
                 image.save()
-            return redirect('home')
+            return redirect('profile', request.user.username)
     else:
         form = PostForm()
         image_form = PostImageForm()
@@ -77,7 +73,7 @@ def edit_post(request, post_id):
             for i in images:
                 image = PostImage(image=i, post=post)
                 image.save()
-            return redirect('home')
+            return redirect('post_detail', post.id)
     else:
         form = PostForm(instance=post)
         image_form = PostChangeImageForm
@@ -93,14 +89,8 @@ def edit_post(request, post_id):
 @login_required
 def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    already_liked = True if request.user.id in post.likes.values_list(
-        'user', flat=True) else False
-    tags_post = list(post.tags.all())
     context = {
         'post': post,
-        'liked': already_liked,
-        'total': post.likes.count(),
-        'tags_post': tags_post
     }
     return render(request, 'post_detail.html', context)
 
@@ -109,23 +99,24 @@ def post_detail(request, post_id):
 def like(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if request.user == post.author:
-        return redirect('post_detail', post_id=post_id)
-    if Likes.objects.filter(user=request.user.id, post=post.id).exists():
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+    if post.liked(request.user.id):
         like = Likes.objects.get(user=request.user.id, post=post.id)
         like.delete()
     else:
         like = Likes(user=request.user, post=post)
         like.save()
-    return redirect('post_detail', post_id=post_id)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required()
 def delete_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if request.user != post.author:
-        return redirect('home')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     post.delete()
-    return redirect('home')
+    return redirect('profile', request.user.username)
 
 
 @login_required
@@ -162,7 +153,7 @@ def follow(request, username):
     else:
         request.user.following.add(owner)
         request.user.save()
-    return redirect('profile', username=owner.username)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required()
@@ -172,7 +163,7 @@ def search_user(request):
         query = request.GET.get('query')
         result = DUser.objects.filter(
             Q(username__icontains=query) | Q(bio__icontains=query)).all()
-        context = {'result': result}
+        context = {'result': result, 'search': query}
     return render(request, 'search.html', context)
 
 

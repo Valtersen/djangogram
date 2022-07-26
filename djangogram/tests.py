@@ -57,7 +57,7 @@ class TestViews(TestCase):
         response = self.client.post('/djangogram/create_post/', data)
         self.assertRedirects(
             response,
-            '/djangogram/',
+            f'/djangogram/profile/{self.username}/',
             fetch_redirect_response=False)
         post = Post.objects.get(caption='second post')
         self.assertEqual(post.text, 'hello')
@@ -73,7 +73,7 @@ class TestViews(TestCase):
         response = self.client.get(f'/djangogram/post/{post.id}')
         self.assertEqual(response.status_code, 200)
         self.assertTrue(b'second post' in response.content)
-        self.assertTrue(b'Likes: 0' in response.content)
+        self.assertTrue(b'likes: 0' in response.content)
 
     def test_followers(self):
         response = self.client.get('/djangogram/profile/john/')
@@ -107,7 +107,7 @@ class TestViews(TestCase):
         response = self.client.post(f'/djangogram/edit_post/{post.id}', data)
         self.assertRedirects(
             response,
-            '/djangogram/',
+            f'/djangogram/post/{post.id}',
             fetch_redirect_response=False)
         response = self.client.get(f'/djangogram/post/{post.id}')
         self.assertTrue(b'1st post' in response.content)

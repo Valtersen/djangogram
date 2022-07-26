@@ -2,6 +2,7 @@ from django import forms
 from django.forms import ClearableFileInput
 from django.contrib.auth.forms import UserCreationForm
 from .models import *
+from taggit.forms import *
 
 
 class DUserCreationForm(UserCreationForm):
@@ -42,6 +43,8 @@ class DUserAvatarForm(forms.ModelForm):
 
 
 class PostForm(forms.ModelForm):
+    tags = TagField(required=False)
+
     class Meta:
         model = Post
         fields = ('caption', 'text', 'tags')

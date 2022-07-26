@@ -35,6 +35,18 @@ class Post(models.Model):
     def __str__(self):
         return self.caption
 
+    def liked(self, user_id):
+        liked = True if Likes.objects.filter(user=user_id, post=self.id).exists() else False
+        return liked
+
+    @property
+    def total_likes(self):
+        return self.likes.count()
+
+    @property
+    def tag_list(self):
+        return list(self.tags.all())
+
 
 class PostImage(models.Model):
     post = models.ForeignKey(
