@@ -12,8 +12,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '')
 DEBUG = True
 
 if os.environ.get('ON_HEROKU', ''):
-    #DEBUG = False
-    DEBUG = True
+    DEBUG = False
+    # DEBUG = True
 else:
     DEBUG = True
     load_dotenv()
