@@ -7,7 +7,7 @@ import sys
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = 'django-insecure-vufjclp8qq2gl#hjs2u+qx0*u31^egite8u8cl^)13*%qpd7j('
+SECRET_KEY = os.environ.get('SECRET_KEY', '')
 
 DEBUG = True
 
@@ -139,6 +139,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'djangogram.DUser'
 
+
+LOGIN_URL = 'account_login'
 
 LOGIN_REDIRECT_URL = 'home'
 
