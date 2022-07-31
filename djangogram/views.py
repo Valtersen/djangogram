@@ -10,8 +10,12 @@ from django.contrib import messages
 def index(request):
     if request.user.is_authenticated:
         posts = Post.objects.filter(
-            author__in=request.user.following.all()).order_by('-created_at').all()
+            author__in=request.user.following.all()).order_by('-created_at').all()[:10]
         context = {'posts': posts}
+        if not posts:
+            recommended_users = DUser.objects.annotate(count=Count('followers')).order_by(
+                '-count').exclude(id=request.user.id).all()[:5]
+            context['recommended_users'] = recommended_users
         return render(request, 'home.html', context)
     else:
         return redirect('account_login')
