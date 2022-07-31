@@ -69,5 +69,14 @@
 
 {% else %}
 <p>No posts available</p>
+{% if recommended_users %}
+    {% for user in recommended_users %}
+        <br/>
+        <div class="panel panel-default">
+            <div class="panel-heading"><a href="{% url 'profile' user.username %}"><h3>{{ user.username }}</h3></a></div>
+            <div class="panel-body">{{ user.bio }}</div>
+        </div>
+    {% endfor %}
+{% endif %}
 {% endif %}
 {% endblock %}
