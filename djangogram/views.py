@@ -47,11 +47,12 @@ def create_post(request):
             post = form.save(commit=False)
             post.author = request.user
             post.save()
-            form.save_m2m()
 
             for i in images:
                 image = PostImage(image=i, post=post)
                 image.save()
+
+            form.save_m2m()
             return redirect('profile', request.user.username)
     else:
         form = PostForm()
