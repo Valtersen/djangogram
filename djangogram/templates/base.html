@@ -23,6 +23,28 @@
         </div>
       </div>
     </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script type="text/javascript">
+       $('.like-form').submit(function(e) {
+        e.preventDefault();
+        const post_id = $(this).attr('id');
+        const action = $(".likebtn"+post_id).val();
+        console.log(action);
+        console.log(post_id);
+
+         $.ajax({
+          type:"POST",
+          url: "{% url 'like' %}",
+          data: {
+                 'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                 'post_id': post_id,
+          },
+          success: function( data ) {
+          $('.like-form'+post_id).html(data['form']);
+          }
+        })
+      });
+    </script>
 </main>
 </body>
 </html>

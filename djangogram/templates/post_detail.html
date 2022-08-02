@@ -52,16 +52,9 @@
             <p>created at: {{ post.created_at }}</p>
 
             {% if user != post.author %}
-                    <form name="like_form" action="{% url 'like' post.id %}" method="post">
-                        {% csrf_token %}
-                    {% if post|liked:user.id %}
-                        <button type="submit" value="{{post.id}}" style="font-size:30px;color: blue;"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
-                        {{post.total_likes}}
-                    {% else %}
-                        <button type="submit" value="{{post.id}}" style="font-size:30px;color: black;"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
-                        {{post.total_likes}}
-                    </form>
-                    {% endif %}
+                    <div class="like-section">
+                        {% include 'like_section.html' %}
+                    </div>
             {% else %}
                 <p>likes: {{post.total_likes}}</p>
                 <p><a href="{% url 'edit_post' post.id %}">edit post</a></p>

@@ -1,13 +1,13 @@
 {% load custom_tags %}
 {% load static %}
-<form class="like_form" action="{% url 'like' %}" method="POST" id="{{ post.id }}">
+<form class="like-form like-form{{post.id}}" action="{% url 'like' %}" method="POST" id="{{ post.id }}">
     {% csrf_token %}
     {% if post|liked:user.id %}
-    <button type="submit" id="unlike" value="{{ post.id }}" style="font-size:30px;color: blue;" class='like-btn{{post.id}}' ><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
-    <div class="total_likes{{ post.id }}">{{post.total_likes}}</div>
+    <button type="submit" id="unlike" value="unlike" style="font-size:30px;color: blue;" class="likebtn likebtn{{post.id}}" ><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
+    {{post.total_likes}}
     {% else %}
-    <button type="submit" id="like" value="{{post.id}}" class='like-btn{{post.id}}' style="font-size:30px;color: black;"><i class="fa fa-thumbs-up " aria-hidden="true"></i></button>
-    <div class="total_likes{{ post.id }}">{{post.total_likes}}</div>
+    <button type="submit" id="like" value="like" class="likebtn likebtn{{post.id}}" style="font-size:30px;color: black;"><i class="fa fa-thumbs-up " aria-hidden="true"></i></button>
+    {{post.total_likes}}
     {% endif %}
 </form>
 
