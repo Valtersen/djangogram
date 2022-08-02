@@ -1,7 +1,11 @@
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q, Count
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.template.loader import render_to_string
+from django.urls import reverse
+
 from .forms import *
 from .models import *
 from django.contrib import messages
@@ -51,9 +55,10 @@ def create_post(request):
             for i in images:
                 image = PostImage(image=i, post=post)
                 image.save()
-
             form.save_m2m()
-            return redirect('profile', request.user.username)
+            return redirect(reverse('post_detail', args=(post.id,)))
+            # return redirect('profile', request.user.username) #HERE
+            # #like = Like.objects.filter(post=post, user=request.user).latest('id')
     else:
         form = PostForm()
         image_form = PostImageForm()
@@ -101,18 +106,57 @@ def post_detail(request, post_id):
 
 
 @login_required()
-def like(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
+def like(request):
+    post_id = request.POST.get('post_id')
+
+    try:
+        post = Post.objects.get(pk=post_id)
+    except ObjectDoesNotExist:
+        return HttpResponse('Could not find post')
+
     if request.user == post.author:
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
-    if post.liked(request.user.id):
-        like = Likes.objects.get(user=request.user.id, post=post.id)
-        like.delete()
-    else:
-        like = Likes(user=request.user, post=post)
-        like.save()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    if request.method == 'POST':
+        if post.liked(request.user.id):
+            like = Likes.objects.get(user=request.user.id, post=post.id)
+            like.delete()
+        else:
+            like = Likes(user=request.user, post=post)
+            like.save()
+        html = render_to_string('like_section.html', {'post': post}, request=request)
+        return JsonResponse({'form': html})
+
+
+# def like_post(request):
+#     if request.method == 'POST':
+#         post_id = request.POST.get('post_id')
+#         action = request.POST.get('action')
+#         try:
+#             post = Post.objects.get(pk=post_id)
+#         except ObjectDoesNotExist:
+#             return HttpResponse('Could not find post')
+#
+#         if action == 'like':
+#             like = Like(post=post, user=request.user)
+#             like.save()
+#             message = f'Liked post :{post.heading}!'
+#
+#         elif action == 'unlike':
+#             like = Like.objects.filter(post=post, user=request.user).latest('id')
+#             like.delete()
+#             message = f'Unliked post :{post.heading}!'
+#
+#         else:
+#             message = 'idk what action'
+#
+#         html = render_to_string('like_section.html', {'post': post}, request=request)
+#         return JsonResponse({'form': html, 'message': message})
+#
+#     else:
+#         return HttpResponse('Not a post request')
+
+
 
 
 @login_required()
