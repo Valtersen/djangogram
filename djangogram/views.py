@@ -128,37 +128,6 @@ def like(request):
         return JsonResponse({'form': html})
 
 
-# def like_post(request):
-#     if request.method == 'POST':
-#         post_id = request.POST.get('post_id')
-#         action = request.POST.get('action')
-#         try:
-#             post = Post.objects.get(pk=post_id)
-#         except ObjectDoesNotExist:
-#             return HttpResponse('Could not find post')
-#
-#         if action == 'like':
-#             like = Like(post=post, user=request.user)
-#             like.save()
-#             message = f'Liked post :{post.heading}!'
-#
-#         elif action == 'unlike':
-#             like = Like.objects.filter(post=post, user=request.user).latest('id')
-#             like.delete()
-#             message = f'Unliked post :{post.heading}!'
-#
-#         else:
-#             message = 'idk what action'
-#
-#         html = render_to_string('like_section.html', {'post': post}, request=request)
-#         return JsonResponse({'form': html, 'message': message})
-#
-#     else:
-#         return HttpResponse('Not a post request')
-
-
-
-
 @login_required()
 def delete_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
@@ -170,39 +139,47 @@ def delete_post(request, post_id):
 
 @login_required
 def profile(request, username):
-    owner = get_object_or_404(DUser, username=username)
-    posts = owner.posts.all().order_by('-created_at')
+    profile = get_object_or_404(DUser, username=username)
+    posts = profile.posts.all().order_by('-created_at')
 
-    followers = owner.followers.count()
-    following = owner.following.count()
+    followers = profile.followers.count()
+    following = profile.following.count()
 
     context = {
         'posts': posts,
-        'owner': owner,
+        'profile': profile,
         'followers': followers,
         'following': following}
 
-    if request.user == owner:
+    if request.user == profile:
         return render(request, 'userprofile.html', context)
     else:
-        followed = True if request.user in owner.followers.all() else False
-        follows = True if request.user in owner.following.all() else False
-        context['followed'] = followed
-        context['follows'] = follows
         return render(request, 'profile.html', context)
 
 
 @login_required()
-def follow(request, username):
-    owner = get_object_or_404(DUser, username=username)
-    followed = True if request.user in owner.followers.all() else False
-    if followed:
-        request.user.following.remove(owner)
-        request.user.save()
-    else:
-        request.user.following.add(owner)
-        request.user.save()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+def follow(request):
+
+    profile_id = request.POST.get('profile_id')
+    try:
+        profile = DUser.objects.get(id=profile_id)
+    except ObjectDoesNotExist:
+        return HttpResponse('Could not find user')
+
+    if profile == request.user:
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+    if request.method == 'POST':
+        followed = True if request.user in profile.followers.all() else False
+        if followed:
+            request.user.following.remove(profile)
+            request.user.save()
+        else:
+            request.user.following.add(profile)
+            request.user.save()
+
+        html = render_to_string('follow_section.html', {'profile': profile}, request=request)
+        return JsonResponse({'form': html})
 
 
 @login_required()
@@ -221,3 +198,11 @@ def posts_with_tag(request, tag):
     posts = Post.objects.filter(tags__name__icontains=tag).all()
     context = {'posts': posts, 'tag': tag}
     return render(request, 'posts_tag.html', context)
+
+
+@login_required()
+def users_liked(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    user_list =  DUser.objects.filter(liked__post=post)
+    return render(request, 'user_list.html', {'user_list': user_list, 'page_name': f"Likes on post '{post.caption}'"})
+

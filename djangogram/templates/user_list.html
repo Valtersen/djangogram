@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
-{% block title %}Search result{% endblock %}
-
+{% block title %}{{ page_name }}{% endblock %}
 {% block content %}
+{% load custom_tags %}
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -25,19 +25,21 @@
   </div>
 </nav>
 
+<button onclick="history.back()" type="button" class="btn btn-info" >Go Back</button>
 <br/>
-<h1>Results for '{{ search }}':</h1>
+<h3>{{ page_name }}</h3>
 
-{% for profile in result %}
+{% for profile in user_list %}
     <br/>
     <div class="panel panel-default">
         <div class="panel-heading"><a href="{% url 'profile' profile.username %}"><h3>{{ profile.username }}</h3></a>
-            {% if profile != user %}
-                {% include 'follow_section.html' %}
-            {% endif %}
+        {% if profile != user %}
+            {% include 'follow_section.html' %}
+        {% endif %}
         </div>
         <div class="panel-body">{{ profile.bio }}</div>
     </div>
 {% endfor %}
+
 
 {% endblock %}

@@ -10,5 +10,8 @@ def liked(post, user_id):
     return liked
 
 
-register.filter('liked', liked)
+@register.filter(name='follows')
+def follows(user, profile):
+    follows = user.follows(profile)
+    return follows
 

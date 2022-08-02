@@ -1,0 +1,12 @@
+{% load custom_tags %}
+<form action="{% url 'follow' %}" class="follow-form follow-form{{profile.id}}" method="post" id="{{ profile.id }}">
+{% csrf_token %}
+{% if user|follows:profile %}
+    <button type="submit" class="btn btn-light followbtn{{profile.id}}" value="unfollow">Unfollow</button>
+{% else %}
+    <button type="submit" class="btn btn-info followbtn{{profile.id}}" value="follow">Follow</button>
+{% endif %}
+</form>
+
+
+

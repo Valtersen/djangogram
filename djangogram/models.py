@@ -20,6 +20,10 @@ class DUser(AbstractUser):
     def __str__(self):
         return self.username
 
+    def follows(self, user):
+        followed = True if self in user.followers.all() else False
+        return followed
+
 
 class Post(models.Model):
     author = models.ForeignKey(
