@@ -3,7 +3,7 @@
 <form class="like-form like-form{{post.id}}" action="{% url 'like' %}" method="POST" id="{{ post.id }}">
     {% csrf_token %}
     {% if post|liked:user.id %}
-    <button type="submit" id="unlike" value="unlike" style="font-size:30px;color: blue;" class="likebtn likebtn{{post.id}}"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
+    <button type="submit" id="unlike" value="unlike" style="font-size:30px" class="likebtn likebtn{{post.id}}"><i class="fa fa-thumbs-up text-info" aria-hidden="true"></i></button>
     <a href="{% url 'users_liked' post.id%}">{{post.total_likes}}</a>
     {% else %}
     <button type="submit" id="like" value="like" class="likebtn likebtn{{post.id}}" style="font-size:30px;color: black;"><i class="fa fa-thumbs-up " aria-hidden="true"></i></button>
