@@ -5,10 +5,8 @@ from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse
-
 from .forms import *
 from .models import *
-from django.contrib import messages
 
 
 def index(request):
@@ -159,7 +157,6 @@ def profile(request, username):
 
 @login_required()
 def follow(request):
-
     profile_id = request.POST.get('profile_id')
     try:
         profile = DUser.objects.get(id=profile_id)
@@ -203,6 +200,5 @@ def posts_with_tag(request, tag):
 @login_required()
 def users_liked(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    user_list =  DUser.objects.filter(liked__post=post)
+    user_list = DUser.objects.filter(liked__post=post)
     return render(request, 'user_list.html', {'user_list': user_list, 'page_name': f"Likes on post '{post.caption}'"})
-
