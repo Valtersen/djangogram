@@ -27,12 +27,12 @@
   </div>
 </nav>
 
-<p>username: {{ owner.username }}</p>
-<p>bio: {{ owner.bio }}</p>
-{% if owner.avatar %}
-<p><img class="avatar" src="{{ owner.avatar.url }}"/></p>
+<p>username: {{  profile.username }}</p>
+<p>bio: {{ profile.bio }}</p>
+{% if profile.avatar %}
+<p><img class="avatar" src="{{ profile.avatar.url }}"/></p>
 {% endif %}
-<p>joined: {{ owner.date_joined }}</p>
+<p>joined: {{ profile.date_joined }}</p>
 <p>{{ followers }} follower{{ followers|pluralize }}</p>
 <p>{{ following }} following</p>
 
@@ -59,7 +59,7 @@
                         {% endfor %}
                         <p>created at: {{ post.created_at }}</p>
                         <p><a href="{% url 'edit_post' post.id %}">edit post</a></p>
-                        <p>likes:{{post.total_likes}}</p>
+                        <p>likes: <a href="{% url 'users_liked' post.id%}">{{post.total_likes}} </a></p>
                     </div>
                 </div>
             </div>

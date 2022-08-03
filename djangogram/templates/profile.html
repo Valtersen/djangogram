@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}{{ owner.username }}{% endblock %}
+{% block title %}{{ profile.username }}{% endblock %}
 {% block content %}
 {% load custom_tags %}
 
@@ -29,26 +29,21 @@
 
 
 
-<p>username: {{ owner.username }}</p>
-<p>bio: {{ owner.bio }}</p>
-{% if owner.avatar %}
-<p><img class="avatar" src="{{ owner.avatar.url }}"/></p>
+<p>username: {{ profile.username }}</p>
+<p>bio: {{ profile.bio }}</p>
+{% if profile.avatar %}
+<p><img class="avatar" src="{{ profile.avatar.url }}"/></p>
 {% endif %}
-<p>joined: {{ owner.date_joined }}</p>
+<p>joined: {{ profile.date_joined }}</p>
 <br/>
 <span class="nowrap">{{ followers }} follower</span>
 <span class="nowrap">{{ following }} following</span>
 {% if follows %}
 <p>Follows you</p>
 {% endif %}
-<form action="{% url 'follow' owner.username %}" method="post" name="following">
-{% csrf_token %}
-{% if followed %}
-    <button id="followed-button">Unfollow</button>
-{% else %}
-    <button id="follow-button">Follow</button>
-{% endif %}
-</form>
+<div class="follow-section">
+    {% include 'follow_section.html' %}
+</div>
 
 <br/>
 {% if posts%}

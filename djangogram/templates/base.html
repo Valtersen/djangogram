@@ -11,6 +11,7 @@
     <meta charset="UTF-8">
     <title>{% block title %}Djangogram{% endblock title %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    {% load custom_tags %}
 </head>
 <body>
 <main>
@@ -44,6 +45,28 @@
           }
         })
       });
+
+
+       $('.follow-form').submit(function(e) {
+        e.preventDefault();
+        const profile_id = $(this).attr('id');
+        const action = $(".followbtn"+profile_id).val();
+        console.log(action);
+        console.log(profile_id);
+
+         $.ajax({
+          type:"POST",
+          url: "{% url 'follow' %}",
+          data: {
+                 'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                 'profile_id': profile_id,
+          },
+          success: function( data ) {
+          $('.follow-form'+profile_id).html(data['form']);
+          }
+        })
+      });
+
     </script>
 </main>
 </body>
