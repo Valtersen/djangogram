@@ -3,9 +3,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 import sys
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 SECRET_KEY = os.environ.get('SECRET_KEY', '')
 
@@ -15,9 +13,7 @@ else:
     DEBUG = True
     load_dotenv()
 
-
 ALLOWED_HOSTS = ['djangogram-v.herokuapp.com', '127.0.0.1']
-
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -34,7 +30,28 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'elasticemailbackend',
     'crispy_forms',
+    'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.google',
+
 ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    "github": {
+        "VERIFIED_EMAIL": True,
+        'SCOPE': [
+            'user',
+            'repo',
+            'read:org',
+        ],
+    },
+    "google": {
+        "VERIFIED_EMAIL": True,
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+    },
+}
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -44,7 +61,6 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -77,7 +93,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'social.wsgi.application'
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -89,7 +104,6 @@ DATABASES = {
     }
 }
 
-
 if 'test' in sys.argv:
     DATABASES['default'] = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -99,7 +113,6 @@ if 'test' in sys.argv:
         'HOST': os.environ.get('DB_TEST_HOST', ''),
         'PORT': '5432',
     }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -116,7 +129,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Europe/Kiev'
@@ -125,16 +137,13 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 STATIC_URL = 'static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'djangogram.DUser'
-
 
 LOGIN_URL = 'account_login'
 
