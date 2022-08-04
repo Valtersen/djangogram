@@ -152,6 +152,8 @@ def profile(request, username):
     if request.user == profile:
         return render(request, 'userprofile.html', context)
     else:
+        follows = True if request.user in profile.following.all() else False
+        context['follows'] = follows
         return render(request, 'profile.html', context)
 
 

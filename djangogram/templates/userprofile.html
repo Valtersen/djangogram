@@ -33,8 +33,9 @@
 <p><img class="avatar" src="{{ profile.avatar.url }}"/></p>
 {% endif %}
 <p>joined: {{ profile.date_joined }}</p>
-<p>{{ followers }} follower{{ followers|pluralize }}</p>
-<p>{{ following }} following</p>
+<span class="nowrap">{{ followers }} follower{{ followers|pluralize }}</span>
+•
+<span class="nowrap">{{ following }} following</span>
 
 <br/>
 <h1>Posts:</h1>

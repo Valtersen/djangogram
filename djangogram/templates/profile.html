@@ -36,7 +36,8 @@
 {% endif %}
 <p>joined: {{ profile.date_joined }}</p>
 <br/>
-<span class="nowrap">{{ followers }} follower</span>
+<span class="nowrap">{{ followers }} follower{{ followers|pluralize }}</span>
+•
 <span class="nowrap">{{ following }} following</span>
 {% if follows %}
 <p>Follows you</p>
