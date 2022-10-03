@@ -212,6 +212,9 @@ def remove_image(request, post_id, image_id):
         post = Post.objects.get(pk=post_id)
     except ObjectDoesNotExist:
         return HttpResponse('Could not find post')
+    
+    if request.user != post.author:
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
     try:
         image = post.images.get(id=image_id)
