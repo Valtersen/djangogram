@@ -62,9 +62,6 @@ class PostImage(models.Model):
         blank=True,
         upload_to='posts/%Y/%m/%d')
 
-    def __str__(self):
-        return self.post
-
 
 class Likes(models.Model):
     post = models.ForeignKey(

@@ -91,7 +91,7 @@ def edit_post(request, post_id):
                   {'form': form,
                    'image_form': image_form,
                    'edit': True,
-                   'post_id': post_id})
+                   'post': post})
 
 
 @login_required
@@ -204,3 +204,18 @@ def users_liked(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     user_list = DUser.objects.filter(liked__post=post)
     return render(request, 'user_list.html', {'user_list': user_list, 'page_name': f"Likes on post '{post.caption}'"})
+
+
+@login_required()
+def remove_image(request, post_id, image_id):
+    try:
+        post = Post.objects.get(pk=post_id)
+    except ObjectDoesNotExist:
+        return HttpResponse('Could not find post')
+
+    try:
+        image = post.images.get(id=image_id)
+    except ObjectDoesNotExist:
+        return HttpResponse('Could not find image')
+    image.delete()
+    return redirect('edit_post', post.id)

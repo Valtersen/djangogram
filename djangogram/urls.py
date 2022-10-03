@@ -19,4 +19,6 @@ urlpatterns = [
     path('tag/<tag>', views.posts_with_tag, name='posts_with_tag'),
     path('like/post/', views.like, name='like'),
     path('liked/<post_id>/', views.users_liked, name='users_liked'),
+    path('post/<post_id>/remove_image/<image_id>/', views.remove_image, name='remove_image')
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

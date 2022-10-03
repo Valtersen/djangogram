@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
-{% block title %}Create post{% endblock %}
+{% block title %} {% if edit %}Edit post{% else %}Create post{% endif %} {% endblock %}
 {% block content %}
 
 <nav class="navbar navbar-default">
@@ -33,7 +33,7 @@
 
 {% if edit %}
     <h1>Edit post</h1>
-    <p><a href="{% url 'delete_post' post_id %}">delete post</a> </p>
+    <p><a href="{% url 'delete_post' post.id %}">delete post</a> </p>
 {% else %}
     <h1>Create post</h1>
 {% endif %}
@@ -44,6 +44,17 @@
     {% csrf_token %}
     {{ image_form|crispy }}
     <br/>
+        {% if edit %}
+            {% for image in post.images.all %}
+                <form class="remove-image remove-image{{post.id}}-{{image.id}}" action="{% url 'remove_image' post.id image.id%}" method="POST" id="{{ image.id }}">
+                    {% csrf_token %}
+                    <p><img class="post-image" src="{{ image.image.url }}"/></p>
+                    <button type="submit" id="remove" value="remove" style="font-size:15px" class="likebtn">remove image</button>
+                </form>
+                <br/>
+            {% endfor %}
+        {% endif %}
+
     <button type="submit">Save</button>
 </form>
 {% endblock %}
