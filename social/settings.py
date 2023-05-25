@@ -5,7 +5,7 @@ import sys
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get('SECRET_KEY', '')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'egdsfdngdsdadgfgmhggdgdedas')
 
 if os.environ.get('ON_HEROKU', ''):
     DEBUG = False
@@ -30,28 +30,28 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'elasticemailbackend',
     'crispy_forms',
-    'allauth.socialaccount.providers.github',
-    'allauth.socialaccount.providers.google',
+    # 'allauth.socialaccount.providers.github',
+    # 'allauth.socialaccount.providers.google',
 
 ]
 
-SOCIALACCOUNT_PROVIDERS = {
-    "github": {
-        "VERIFIED_EMAIL": True,
-        'SCOPE': [
-            'user',
-            'repo',
-            'read:org',
-        ],
-    },
-    "google": {
-        "VERIFIED_EMAIL": True,
-        'SCOPE': [
-            'profile',
-            'email',
-        ],
-    },
-}
+# SOCIALACCOUNT_PROVIDERS = {
+#     "github": {
+#         "VERIFIED_EMAIL": False,
+#         'SCOPE': [
+#             'user',
+#             'repo',
+#             'read:org',
+#         ],
+#     },
+#     "google": {
+#         "VERIFIED_EMAIL": False,
+#         'SCOPE': [
+#             'profile',
+#             'email',
+#         ],
+#     },
+# }
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -96,11 +96,11 @@ WSGI_APPLICATION = 'social.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('DB_NAME', ''),
-        'USER': os.environ.get('DB_USER', ''),
-        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-        'HOST': os.environ.get('DB_HOST', ''),
-        'PORT': '5432',
+        'NAME': os.environ.get('PSQL_DATABASE', 'djangogram'),
+        'USER': os.environ.get('PSQL_USER', 'root'),
+        'PASSWORD': os.environ.get('PSQL_ROOT_PASSWORD', 'nodsaonoki'),
+        'HOST': os.environ.get('PSQL_HOST', 'localhost'),
+        # 'PORT': os.environ.get('PSQL_TCP_PORT', '45215'),
     }
 }
 
@@ -151,7 +151,7 @@ LOGIN_REDIRECT_URL = 'home'
 
 LOGOUT_REDIRECT_URL = 'home'
 
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_VERIFICATION = "none"
 
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 
