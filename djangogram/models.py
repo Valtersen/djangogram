@@ -7,7 +7,7 @@ class DUser(AbstractUser):
     username = models.CharField(max_length=35, unique=True)
     email = models.EmailField(max_length=254)
     avatar = models.ImageField(
-        default='default_hdqd19.png',
+        default='/avatars/default_.jpg',
         null=True,
         upload_to='avatars')
     bio = models.CharField(max_length=200, blank=True)
